@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const path = require('path');
 const cors = require('cors');
+const emailService = require('./app/email_service');
 
 dotenv.config({ path: path.join(__dirname, '.env') });
 
@@ -80,6 +81,13 @@ app.post('/api/webhook/stripe', async (req, res) => {
         case 'payment_intent.succeeded':
             const paymentIntent = event.data.object;
             console.log('PaymentIntent was successful!');
+            
+            // Afternoon Optimization: Call branded email service
+            const customerEmail = paymentIntent.receipt_email || 'client@jessesdigitalventures.com';
+            const customerName = paymentIntent.shipping?.name || 'Valued Client';
+            const missionName = 'Powerhouse High-Tech Requisition';
+            
+            await emailService.sendMissionConfirmedEmail(customerEmail, customerName, missionName);
             break;
         default:
             console.log(`Unhandled event type ${event.type}`);
