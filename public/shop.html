@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power House | Premium Solar Gear</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        body { background-color: #0a0a0a; color: #E5E7EB; font-family: 'Inter', sans-serif; }
+        .emerald-text { color: #10B981; }
+        .emerald-bg { background-color: #064E3B; }
+        .charcoal-bg { background-color: #171717; }
+        
+        #social-proof-popup {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+            transform: translateX(-30px);
+            z-index: 50;
+        }
+        #social-proof-popup.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="p-8 lg:p-16">
+    <header class="mb-16 text-center">
+        <h1 class="text-6xl font-black tracking-tighter emerald-text mb-4">POWER HOUSE</h1>
+        <p class="text-gray-500 text-lg">Industrial Grade Energy Independence.</p>
+    </header>
+
+    <div class="max-w-7xl mx-auto mb-16" id="elite-mission-container">
+        <!-- Elite Mission Hero will be injected here -->
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-7xl mx-auto" id="product-grid">
+        <!-- Regular Products will be injected here -->
+    </div>
+
+    <!-- Social Proof Widget -->
+    <div id="social-proof-popup" class="charcoal-bg border border-emerald-500/20 p-5 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center gap-5 max-w-md backdrop-blur-md bg-opacity-90">
+        <div class="w-14 h-14 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center text-emerald-400 font-bold text-2xl">
+            <span id="sp-initial"></span>
+        </div>
+        <div class="flex-1">
+            <p class="text-[15px] leading-relaxed text-gray-300">
+                <span id="sp-text"></span>
+            </p>
+            <div class="flex items-center gap-2 mt-2">
+                <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                <span class="text-[10px] uppercase tracking-[0.2em] text-emerald-500 font-black">Verified Transaction</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchProducts() {
+            try {
+                const res = await fetch('/api/products');
+                const data = await res.json();
+                
+                const eliteContainer = document.getElementById('elite-mission-container');
+                const grid = document.getElementById('product-grid');
+                
+                // Separate Bundle
+                const bundle = data.products.find(p => p.id === 'bundle-001');
+                const regulars = data.products.filter(p => p.id !== 'bundle-001');
+
+                if (bundle) {
+                    eliteContainer.innerHTML = `
+                        <div class="bg-gradient-to-br from-emerald-900/20 to-black p-1 rounded-3xl border border-emerald-500/50 shadow-[0_0_50px_rgba(16,185,129,0.2)]">
+                            <div class="charcoal-bg p-8 md:p-12 rounded-[1.4rem] flex flex-col md:flex-row gap-10 items-center">
+                                <div class="flex-1">
+                                    <div class="inline-block bg-emerald-500 text-black px-4 py-1 rounded-full text-xs font-black tracking-widest uppercase mb-6">Elite Mission Upgrade</div>
+                                    <h2 class="text-4xl md:text-5xl font-black mb-4">\${bundle.name}</h2>
+                                    <p class="text-gray-400 text-lg mb-8 leading-relaxed">\${bundle.description}</p>
+                                    <div class="flex items-center gap-6">
+                                        <p class="text-emerald-400 font-mono text-4xl font-bold">$\${bundle.price.toLocaleString()}</p>
+                                        <button class="bg-emerald-600 hover:bg-emerald-500 text-black font-black px-10 py-4 rounded-xl transition-all active:scale-95 uppercase tracking-widest text-sm shadow-[0_10px_30px_rgba(16,185,129,0.3)]">Deploy Kit Now</button>
+                                    </div>
+                                </div>
+                                <div class="text-[10rem] opacity-20 hidden md:block select-none">\${bundle.emoji}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                grid.innerHTML = regulars.map(p => `
+                    <div class="charcoal-bg p-8 rounded-3xl border border-gray-800 hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] transition-all duration-500 group relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-20 transition-opacity">
+                            <span class="text-8xl">\${p.emoji}</span>
+                        </div>
+                        <div class="text-5xl mb-6">\${p.emoji}</div>
+                        <h3 class="text-2xl font-bold mb-3">\${p.name}</h3>
+                        <p class="text-emerald-400 font-mono text-2xl mb-8">$\${p.price.toLocaleString()}</p>
+                        <button class="w-full bg-emerald-600 hover:bg-emerald-500 text-black font-black py-4 rounded-xl transition-all active:scale-95 uppercase tracking-widest text-xs">Secure Unit Now</button>
+                    </div>
+                `).join('');
+            } catch (e) { console.error("Failed to load products", e); }
+        }
+
+        async function initSocialProof() {
+            const popup = document.getElementById('social-proof-popup');
+            const initialEl = document.getElementById('sp-initial');
+            const textEl = document.getElementById('sp-text');
+            
+            let sales = [];
+            try {
+                const res = await fetch('/api/live-sales');
+                sales = await res.json();
+            } catch (e) { console.error("Social proof error", e); }
+
+            if (!sales || sales.length === 0) return;
+
+            let index = 0;
+            function showNext() {
+                const sale = sales[index];
+                const timeStr = formatTimeAgo(new Date(sale.time));
+                
+                popup.classList.remove('show');
+                
+                setTimeout(() => {
+                    initialEl.innerText = sale.initial;
+                    textEl.innerHTML = \`<strong class="text-white">\\${sale.initial}</strong> in <span class="text-emerald-400 font-medium">\\${sale.city}</span> just secured a <span class="text-white">\\${sale.product}</span> \\${timeStr}!\`;
+                    popup.classList.add('show');
+                }, 600);
+
+                index = (index + 1) % sales.length;
+            }
+
+            function formatTimeAgo(date) {
+                const seconds = Math.floor((new Date() - date) / 1000);
+                if (seconds < 60) return "just now";
+                const mins = Math.floor(seconds / 60);
+                if (mins < 60) return mins + "m ago";
+                const hours = Math.floor(mins / 60);
+                if (hours < 24) return hours + "h ago";
+                return Math.floor(hours / 24) + "d ago";
+            }
+
+            setInterval(showNext, 10000);
+            showNext();
+        }
+
+        fetchProducts();
+        initSocialProof();
+    </script>
+</body>
+</html>
