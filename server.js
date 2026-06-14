@@ -36,7 +36,7 @@ const products = [
 // Endpoints
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 app.get('/api/products', (req, res) => res.json({ products }));
-app.get('/api/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'public', 'dashboard.html')));
+app.get('/api/dashboard', (req, res) => { console.log('API Dashboard requested'); res.sendFile(path.join(__dirname, 'public', 'dashboard.html'), err => { if (err) console.error('sendFile error:', err); else console.log('sendFile success'); }); });
 app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'public', 'dashboard.html')));
 app.get('/shop', (req, res) => res.sendFile(path.join(__dirname, 'public', 'shop.html')));
 
