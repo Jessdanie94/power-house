@@ -10,7 +10,7 @@ const Queue = require('bull');
 const connectDB = require('./config/db');
 const { connectCacheNode } = require('./services/cacheNode');
 const { logSecurityEventNode } = require('./services/securityLogger');
-const { sendMissionConfirmed } = require('./email_service');
+const { sendMissionConfirmed } = require('./services/emailService');
 const { CircuitBreaker } = require('./services/circuitBreaker');
 const Order = require('./models/Order');
 
