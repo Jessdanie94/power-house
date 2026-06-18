@@ -9,7 +9,7 @@ const Queue = require('bull');
 const connectDB = require('./config/db');
 const Order = require('./models/Order');
 const { calculateRegionalTaxNode } = require('./services/taxCalculator');
-const { sendMissionConfirmed } = require('./email_service');
+const { sendMissionConfirmed } = require('./services/emailService');
 const { connectCacheNode } = require('./services/cacheNode');
 const { CircuitBreaker } = require('./services/circuitBreaker');
 
@@ -56,12 +56,12 @@ app.post('/api/webhook/stripe', async (req, res) => {
             dbSession.startTransaction();
             try {
                 // Write local order
-                const newOrder = await Order.create([{
+                await Order.create([{
                     orderId: session.id,
                     customer: { name: session.customer_details.name, email: session.customer_details.email },
                     totalAmount: taxAudit.finalGrossTotal,
                     financialStatus: 'paid',
-                    fulfillmentStatus: 'pending' // Write 'PENDING' to Outbox
+                    fulfillmentStatus: 'pending' 
                 }], { session: dbSession });
 
                 await dbSession.commitTransaction();
@@ -72,7 +72,7 @@ app.post('/api/webhook/stripe', async (req, res) => {
                     orderId: session.id,
                     lineItems: [{ sku: 'JDV-SFG-001', quantity: 1 }],
                     shippingAddress: session.shipping_details
-                }, { attempts: 5, backoff: 5000 }); // Automated retries
+                }, { attempts: 5, backoff: 5000 });
 
             } catch (error) {
                 await dbSession.abortTransaction();

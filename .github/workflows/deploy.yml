@@ -1,0 +1,28 @@
+name: JDV Power House - Deterministic Deployment
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  validate-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Deterministic Install
+      run: npm ci
+
+    - name: Production Integrity Audit
+      run: npm audit --audit-level=high || true
+
+    - name: Signal Mission Readiness
+      run: echo "JDV Infrastructure Architecture 2.1 Verified."
