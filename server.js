@@ -1,1 +1,101 @@
-cmVxdWlyZSgnZG90ZW52JykuY29uZmlnKCk7CmNvbnN0IGV4cHJlc3MgPSByZXF1aXJlKCdleHByZXNzJyk7CmNvbnN0IHN0cmlwZSA9IHJlcXVpcmUoJ3N0cmlwZScpKHByb2Nlc3MuZW52LlNUUklQRV9TRUNSRVRfS0VZKTsKY29uc3QgbW9uZ29vc2UgPSByZXF1aXJlKCdtb25nb29zZScpOwpjb25zdCBwYXRoID0gcmVxdWlyZSgncGF0aCcpOwpjb25zdCBjb3JzID0gcmVxdWlyZSgnY29ycycpOwoKY29uc3QgYXBwID0gZXhwcmVzcygpOwpjb25zdCBQT1JUID0gODAwMTsKCm1vbmdvb3NlLmNvbm5lY3QocHJvY2Vzcy5lbnYuTU9OR09EQl9VUkkgfHwgJ21vbmdvZGI6Ly9sb2NhbGhvc3Q6MjcwMTcvamVzc2VzX2RpZ2l0YWxfdmVudHVyZXMnKTsKY29uc3QgUGF5bWVudCA9IG1vbmdvb3NlLm1vZGVsKCdQYXltZW50JywgbmV3IG1vbmdvb3NlLlNjaGVtYSh7fSwgeyBzdHJpY3Q6IGZhbHNlIH0pKTsKCmFwcC51c2UoY29ycygpKTsKYXBwLnVzZSgnL2FwaS93ZWJob29rL3N0cmlwZScsIGV4cHJlc3MucmF3KHsgdHlwZTogJ2FwcGxpY2F0aW9uL2pzb24nIH0pKTsKYXBwLnVzZShleHByZXNzLmpzb24oKSk7CmFwcC51c2UoZXhwcmVzcy5zdGF0aWMocGF0aC5qb2luKF9fZGlybmFtZSwgJ3B1YmxpYycpKSk7Cgpjb25zdCBwcm9kdWN0cyA9IFsKICAgIHsgaWQ6IDEzLCBuYW1lOiAnQsOkdW1yLUFHIFNvbGFyIENlbWVudCBNaXhlcicsIHByaWNlOiA1NDksIGNhdGVnb3J5OiAnR2VuZXJhdG9ycycsIGVtb2ppOiAn8J+Pl++4jycgfSwKICAgIHsgaWQ6IDEsIG5hbWU6ICdTb2xhci1GbGFyZSBHZW5lcmF0b3InLCBwcm9jZTogMjkuOTksIGNhdGVnb3J5OiAnR2VuZXJhdG9ycycsIGVtb2ppOiAn4piA77iPJyB9LAogICAgeyBpZDogMTUsIG5hbWU6ICdFY29GbG93IFJpdmVyIDIgUHJvJywgcHJpY2U6IDc5OSwgY2F0ZWdvcnk6ICdQb3J0YWJsZSBQb3dlcicsIGVtb2ppOiAn8J+UpicgfSwKICAgIHsgaWQ6IDE2LCBuYW1lOiAnSmFja2VyeSBFeHBsb3JlciAxMDAwIFYyJywgcHJpY2U6IDc5OSwgY2F0ZWdvcnk6ICdQb3J0YWJsZSBQb3dlcicsIGVtb2ppOiAn8J+UpicgfSwKICAgIHsgaWQ6IDE3LCBuYW1lOiAnREpJIFBvd2VyIDEwMDAnLCBwcmljZTogMTA5OSwgY2F0ZWdvcnk6ICdQb3J0YWJsZSBQb3dlcicsIGVtb2ppOiAn8J+UpicgfSwKICAgIHsgaWQ6IDE4LCBuYW1lOiAnREpJIE1hdmljIDMgUHJvIEFjY2Vzc29yaWVzJywgcHJpY2U6IDE4OS45OSwgY2F0ZWdvcnk6ICdDcmVhdG9yIEdlYXInLCBlbW9qaTogJ++4jycgfSwKICAgIHsgaWQ6IDIzLCBuYW1lOiAnSGlnaC1TcGVlZCBIRE1JIDIuMSBDYWJsZScsIHByaWNlOiAxNC45OSwgY2F0ZWdvcnk6ICdTbWFydCBIb21lJywgZW1vamk6ICfwn5KpJyB9Cl07CgovLyAtLS0gQVVUT01BVEVEIExFREdFUiBBVURJVE9SIChNSUROSUdIVCBOT0RFKSA9PT0KYXBwLmdldCgnL2FwaS9hZG1pbi9hdWRpdCcsIGFzeW5jIChyZXEsIHJlcykgPT4gewogICAgLy8gSW4gYSByZWFsIHByb2R1Y3Rpb24gZW52LCB0aGlzIHdvdWxkIGJlIGEgY3JvbiBqb2IgcnVubmluZyBhdCBtaWRuaWdodC4KICAgIHRyeSB7CiAgICAgICAgY29uc3QgbGF0ZXN0UGF5bWVudHMgPSBhd2FpdCBQYXltZW50LmZpbmQoeyBwYXltZW50X3N0YXR1czogJ3BhaWQnIH0pLnNvcnQoeyBjcmVhdGVkX2F0OiAtMSB9KS5saW1pdCgxMDApOwogICAgICAgIGxldCB0b3RhbE1hcmdpbiA9IDA7CiAgICAgICAgbGV0IGFsZXJ0cyA9IFs7CgogICAgICAgIGxhdGVzdFBheW1lbnRzLmZvckVhY2gocCA9PiB7CiAgICAgICAgICAgIGNvbnN0IHByb2R1Y3ROYW1lID0gcC5tZXRhZGF0YT8ucHJvZHVjdF9uYW1lIHx8ICdQb3dlciBVbml0JzsKICAgICAgICAgICAgY29uc3QgcmV2ZW51ZSA9IHAuYW1vdW50X3RvdGFsIC8gMTAwOwogICAgICAgICAgICBjb25zdCBjb3N0RXN0aW1hdGUgPSByZXZlbnVlICogMC42OyAvLyBBc3N1bWluZyA0MCUgbWFyZ2luIGRlZmF1bHQKICAgICAgICAgICAgY29uc3QgbWFyZ2luID0gcmV2ZW51ZSAtIGNvc3RFc3RpbWF0ZTsKICAgICAgICAgICAgdG90YWxNYXJnaW4gKz0gbWFyZ2luOwoKICAgICAgICAgICAgaWYgKG1hcmdpbiA8IChyZXZlbnVlICogMC4yKSkgewogICAgICAgICAgICAgICBhbGVydHMucHVzaChgTE9XIE1BUkdJTiBERVRFQ1RFRDogJHtwcm9kdWN0TmFtZX0gYXQgJHtyZXZlbnVlfSBDQUQgKG1hcmdpbiA8IDIwJSlgKTsKICAgICAgICAgICAgfQogICAgICAgIH0pOwoKICAgICAgICByZXMuanNvbih7CiAgICAgICAgICAgIHN0YXR1czogJ0F1ZGl0IENvbXBsZXRlJywKICAgICAgICAgICAgZGF0ZTogbmV3IERhdGUoKSwKICAgICAgICAgICAgY2hlY2tlZF9vcmRlcnM6IGxhdGVzdFBheW1lbnRzLmxlbmd0aCwKICAgICAgICAgICAgZGV0ZWN0ZWRfYWxlcnRzOiBhbGVydHMubGVuZ3RoID4gMCA/IGFsZXJ0cyA6ICdOb25lJywKICAgICAgICAgICAgZXN0aW1hdGVkX25ldF9tYXJnaW46IGBfIHt0b3RhbE1hcmdpbi50b0ZpeGVkKDIpfSBDQURgCiAgICAgICAgfSk7CiAgICB9IGNhdGNoIChlKSB7CiAgICAgICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogZS5tZXNhZ2UgfSk7CiAgICB9Cn0pOwoKYXBwLmdldCgnL2FwaS9oZWFsdGgnLCAocmVxLCByZXMpID0+IHJlcy5qc29uKHsgc3RhdHVzOiAnb2snIH0pKTsKYXBwLmdldCgnL2FwaS9wcm9kdWN0cycsIChyZXEsIHJlcykgPT4gcmVzLmpzb24oeyBwcm9kdWN0cyB9KTsKYXBwLmdldCgnL2FwaS9kYXNoYm9hcmQnLCAocmVxLCByZXMpID0+IHJlcy5zZW5kRmlsZShwYXRoLmpvaW4oX19kaXJuYW1lLCAncHVibGljJywgJ2Rhc2hib2FyZC5odG1sJykpKTsKCmFwcC5nZXQoJy9hcGkvbGl2ZS1zYWxlcycsIGFzeW5jIChyZXEsIHJlcykgPT4gewogICAgdHJ5IHsKICAgICAgICBjb25zdCBzYWxlcyA9IGF3YWl0IFBheW1lbnQuZmluZCgpLnNvcnQoeyBjcmVhdGVkX2F0OiAtMSB9KS5saW1pdCg1KTsKICAgICAgICBjb25zdCBhbm9ueW1pemVkID0gc2FsZXMubWFwKHMgPT4gKHsgaW5pdGlhbDogKHMuY3VzdG9tZXI/Lm5hbWUgfHwgJ0EnKVswXS50b1VwcGVyQ2FzZSgpICsgJy4nLCBjaXR5OiBzLnNoaXBwaW5nX2FkZHJlc3M/LmFkZHJlc3M/LmNpdHkgfHwgJ0hpZGRlbiBDaXR5JywgcHJvZHVjdDogcy5tZXRhZGF0YT8ucHJvZHVjdF9uYW1lIHx8ICdQb3dlciBVbml0JywgdGltZTogcy5jcmVhdGVkX2F0IH0pKTsKICAgIC2cmVzLmpzb24oYW5vbnltaXplZCk7CiAgICB9IGNhdGNoIChlKSB7IHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6IGUubWVzY2FnZSB9KTsgfQp9KTsKCmFwcC5wb3N0KCcvYXBpL3dlYmhvb2svc3RyaXBlJywgYXN5bmMgKHJlcSwgcmVzKSA9PiB7CiAgICBjb25zdCBzaWcgPSByZXEuaGVhZGVyc1snc3RyaXBlLXNpZ25hdHVyZSddOwogICAgbGV0IGV2ZW50OwogICAgdHJ5IHsgZXZlbnQgPSBzdHJpcGUud2ViaG9va3MuY29uc3RydWN0RXZlbnQocmVxLmJvZHksIHNpZywgcHJvY2Vzcy5lbnYuU1RSSVBFX1dFQkhPT0tfU0VDUkVUKTsgfSBjYXRjaCAoZXJyKSB7IHJldHVybiByZXMuc3RhdHVzKDQwMCkuc2VuZChgV2ViaG9vayBFcnJvcjogJHtlcnIubWVzc2FnZX1gKTsgfQogICAgaWYgKGV2ZW50LnR5cGUgPT09ICdjaGVja291dC5zZXNzaW9uLmNvbXBsZXRlZCcpIHsgYXdhaXQgUGF5bWVudC5jcmVhdGUoeyAuLi5ldmVudC5kYXRhLm9iamVjdCwgY3JlYXRlZF9hdDogbmV3IERhdGUoKSB9KTsgfQogICAgcmVzLmpzb24oeyByZWNlaXZlZDogdHJ1ZSB9KTsKfSk7CgphcHAubGlzdGVuKFBPUlQsICgpID0+IGNvbnNvbGUubG9nKGBQb3dlciBIb3VzZSBPcGVyYXRpb25hbCBvbiAke1BPUlR9YCkpOw==
+require('dotenv').config();
+const express = require('express');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const mongoose = require('mongoose');
+const path = require('path');
+const cors = require('cors');
+const Queue = require('bull');
+
+// Node Imports
+const connectDB = require('./config/db');
+const { connectCacheNode } = require('./services/cacheNode');
+const { logSecurityEventNode } = require('./services/securityLogger');
+const { sendMissionConfirmed } = require('./email_service');
+const { CircuitBreaker } = require('./services/circuitBreaker');
+const Order = require('./models/Order');
+
+const app = express();
+const PORT = process.env.PORT || 8001;
+
+// Core Node Initialization
+connectDB();
+connectCacheNode();
+
+// Order Routing Queue (Redis)
+const orderRoutingQueue = new Queue('order-routing', process.env.REDIS_URL || 'redis://127.0.0.1:6379');
+
+// 🦾 Initialize Circuit Breakers
+const productBreaker = new CircuitBreaker('JDV_PRODUCT_CATALOG', 5, 60000);
+const webhookBreaker = new CircuitBreaker('STRIPE_WEBHOOK_HUB', 5, 60000);
+
+// Middlewares
+app.use(cors());
+app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    next();
+});
+
+// Routes requiring raw bodies
+app.use('/api/webhook/stripe', express.raw({ type: 'application/json' }));
+app.use('/api/secure-webhooks/stripe-receiver', express.raw({ type: 'application/json' }));
+
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// THE SENTRY GATE
+const sentryGate = (req, res, next) => {
+    if ((req.query.key || req.headers['x-sentry-key']) === 'JDV_SENTRY_966') return next();
+    res.status(403).send("ACCESS DENIED");
+};
+
+// API Endpoints
+app.use('/api/admin', require('./routes/admin'));
+app.use('/api/secure-webhooks', require('./routes/stripeReceiver'));
+
+app.get('/api/health', (req, res) => res.json({ status: 'ok', mongo: mongoose.connection.readyState === 1 }));
+
+app.get('/api/products', async (req, res) => {
+    const products = [
+        { id: 'bundle-001', sku: 'JDV-STK-749', name: 'Sovereign Tactical Deployment Kit', price: 749.00, category: 'Elite Bundle', emoji: '⚔️' },
+        { id: 'solar-mixer', sku: 'JDV-SCM-13', name: 'Bäumr-AG Solar Cement Mixer', price: 549, category: 'Generators', emoji: '🏗️' },
+        { id: 'solar-flare', sku: 'JDV-SFG-001', name: 'Solar-Flare Generator', price: 29.99, category: 'Generators', emoji: '☀️' },
+        { id: 'led-hub', sku: 'JDV-ESL-39', name: 'Eco-Smart LED Hub', price: 44.95, category: 'Smart Home', emoji: '💡' }
+    ];
+    const result = await productBreaker.execute(async () => products, 'cached_products');
+    res.json({ products: result.data, source: result.source });
+});
+
+// Front-end Routes
+app.get('/dashboard', sentryGate, (req, res) => res.sendFile(path.join(__dirname, 'public', 'dashboard.html')));
+app.get('/shop', (req, res) => res.sendFile(path.join(__dirname, 'public', 'shop.html')));
+
+// Webhook Hub
+app.post('/api/webhook/stripe', async (req, res) => {
+    const sig = req.headers['stripe-signature'];
+    const mission = async () => {
+        const event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+        if (event.type === 'checkout.session.completed') {
+            const session = event.data.object;
+            await Order.create({
+                orderId: session.id,
+                customer: { name: session.customer_details.name, email: session.customer_details.email },
+                totalAmount: session.amount_total / 100,
+                financialStatus: 'paid',
+                fulfillmentStatus: 'processing'
+            });
+            await orderRoutingQueue.add({ orderId: session.id, shippingAddress: session.shipping_details });
+            try { await sendMissionConfirmed(session.customer_details.email, session.customer_details.name, session.amount_total, 'Smart Tech Gear'); } catch (e) {}
+        }
+        return { received: true };
+    };
+    const result = await webhookBreaker.execute(mission, 'last_webhook_event');
+    res.status(result.source === 'live_api_pulse' ? 200 : 503).json(result.data);
+});
+
+// SPA Fallback
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'shop.html')));
+
+app.listen(PORT, () => {
+    console.log(`Operational on port ${PORT}`);
+    logSecurityEventNode('SYSTEM_ARCHITECT', 'Server Reboot: Legacy Issue Fixed', { port: PORT });
+});
