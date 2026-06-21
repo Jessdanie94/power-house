@@ -9,6 +9,7 @@ const Queue = require('bull');
 const connectDB = require('./config/db');
 const Order = require('./models/Order');
 const { calculateRegionalTaxNode } = require('./services/taxCalculator');
+const { checkInternalHealth } = require('./services/healthMonitor');
 const { sendMissionConfirmed } = require('./services/emailService');
 const { connectCacheNode } = require('./services/cacheNode');
 const { CircuitBreaker } = require('./services/circuitBreaker');
@@ -90,7 +91,7 @@ app.post('/api/webhook/stripe', async (req, res) => {
     res.status(result.source === 'live_api_pulse' ? 200 : 503).json(result.data);
 });
 
-app.get('/api/health', (req, res) => res.json({ status: 'ok', mongo: mongoose.connection.readyState === 1 }));
+app.get('/api/health', async (req, res) => { const health = await checkInternalHealth(); res.json(health); });
 app.get('/dashboard', sentryGate, (req, res) => res.sendFile(path.join(__dirname, 'public', 'dashboard.html')));
 app.get('/shop', (req, res) => res.sendFile(path.join(__dirname, 'public', 'shop.html')));
 
