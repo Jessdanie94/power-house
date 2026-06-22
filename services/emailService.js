@@ -1,7 +1,11 @@
+require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
 const { Resend } = require('resend');
-const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Fallback to avoid crash during dev, though JDV key is secured.
+const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy');
 
 const sendMissionConfirmed = async (customerEmail, customerName, amount, productName) => {
+  if (!process.env.RESEND_API_KEY) return console.warn('[Email] Confirmed Mission signal blocked: Missing Key.');
   try {
     const { data, error } = await resend.emails.send({
       from: 'JDV Mission Control <onboarding@resend.dev>',
@@ -27,4 +31,30 @@ const sendMissionConfirmed = async (customerEmail, customerName, amount, product
   }
 };
 
-module.exports = { sendMissionConfirmed };
+const sendAbandonedCartHook = async (customerEmail) => {
+  if (!process.env.RESEND_API_KEY) return console.warn('[Email] Recovery hook blocked: Missing Key.');
+  try {
+    const { data, error } = await resend.emails.send({
+      from: 'JDV Sentry <onboarding@resend.dev>',
+      to: [customerEmail],
+      subject: 'RECOVERY SIGNAL: Your Tech Stack is Incomplete',
+      html: `
+        <div style="background: #09090b; color: white; padding: 2rem; font-family: sans-serif; border: 1px solid #dc2626;">
+          <h1 style="color: #dc2626;">Signal Detected: Cart Left In-Flight.</h1>
+          <p>Our sentry nodes detected a mission interruption. Your high-tech gear is still holding in the queue.</p>
+          <p>Secure your digital sovereignty before the stock is reallocated to other sectors.</p>
+          <div style="margin-top: 2rem;">
+            <a href="https://payment-event-hub.preview.emergentagent.com/shop" style="background: #dc2626; color: white; padding: 1rem 2rem; text-decoration: none; font-weight: bold; border-radius: 4px;">RECOVER MISSION</a>
+          </div>
+          <p style="margin-top: 2rem; font-size: 0.8rem; color: #71717a;">Jesse's Digital Ventures — Sentry Mode Active</p>
+        </div>
+      `
+    });
+    if (error) console.error('Abandoned Cart Email error:', error);
+    else console.log('Abandoned Cart recovery email sent:', data.id);
+  } catch (err) {
+    console.error('Email hook failed:', err);
+  }
+};
+
+module.exports = { sendMissionConfirmed, sendAbandonedCartHook };

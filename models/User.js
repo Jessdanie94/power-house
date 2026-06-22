@@ -24,7 +24,16 @@ const UserSchema = new mongoose.Schema({
   waitlistPosition: {
     type: Number,
     required: true
-  }
+  },
+  tier: {
+    type: String,
+    enum: ['INITIATE', 'SENTRY', 'ELITE', 'ARCHITECT'],
+    default: 'INITIATE'
+  },
+  milestones: [{
+    name: String,
+    reachedAt: { type: Date, default: Date.now }
+  }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', UserSchema);

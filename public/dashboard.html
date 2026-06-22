@@ -3,57 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Power House Dashboard</title>
+    <title>JDV | Power House Command</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 30px; }
-        .card { background: #1e293b; padding: 20px; border-radius: 12px; border: 1px solid #334155; }
-        h2 { color: #38bdf8; margin-top: 0; }
-        ul { list-style: none; padding: 0; }
-        li { padding: 10px 0; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; }
-        .status { color: #4ade80; font-weight: bold; }
+        :root {
+            --neon-blue: #38bdf8;
+            --neon-green: #10b981;
+            --neon-gold: #fbbf24;
+            --neon-red: #ef4444;
+            --bg-dark: #09090b;
+            --card-bg: #18181b;
+            --border: #27272a;
+        }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg-dark); color: #f8fafc; margin: 0; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+        .card { background: var(--card-bg); padding: 24px; border-radius: 16px; border: 1px solid var(--border); transition: all 0.3s ease; }
+        .card:hover { border-color: var(--neon-blue); box-shadow: 0 0 20px rgba(56, 189, 248, 0.1); }
+        h2 { color: var(--neon-blue); margin-top: 0; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        ul { list-style: none; padding: 0; margin: 0; }
+        li { padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        li:last-child { border-bottom: none; }
+        .status { color: var(--neon-green); font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; }
+        .pulse { width: 8px; height: 8px; background: var(--neon-green); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(0.95); opacity: 1; } 70% { transform: scale(1.5); opacity: 0; } 100% { transform: scale(0.95); opacity: 0; } }
+        
+        .tier { font-size: 0.6rem; padding: 2px 8px; border-radius: 100px; font-weight: 900; letter-spacing: 1px; }
+        .tier-INITIATE { color: #94a3b8; border: 1px solid #94a3b8; }
+        .tier-SENTRY { color: var(--neon-green); border: 1px solid var(--neon-green); box-shadow: 0 0 5px rgba(16, 185, 129, 0.3); }
+        .tier-ELITE { color: var(--neon-blue); border: 1px solid var(--neon-blue); box-shadow: 0 0 5px rgba(56, 189, 248, 0.3); }
+        .tier-ARCHITECT { color: var(--neon-gold); border: 1px solid var(--neon-gold); box-shadow: 0 0 5px rgba(251, 191, 36, 0.3); }
+
+        .token { font-family: monospace; color: #71717a; font-size: 0.75rem; margin-top: 4px; }
+        .count { font-size: 1.25rem; font-weight: 800; color: #fff; }
+        .rank { font-size: 1.5rem; font-weight: 900; color: var(--border); margin-right: 15px; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Power House <span style="color: #38bdf8;">Control Center</span></h1>
-            <div class="status">SYSTEM ONLINE</div>
+            <h1 style="margin:0; font-size: 1.5rem; font-weight: 900; letter-spacing: -1px;">JDV <span style="color: var(--neon-blue);">SENTRY CORE</span></h1>
+            <div class="status"><div class="pulse"></div> ULTRA-SENTRY MODE ACTIVE</div>
         </header>
         
         <div class="grid">
             <div class="card">
-                <h2>Product Catalog</h2>
-                <ul id="product-list">Loading...</ul>
+                <h2>📦 Product Inventory</h2>
+                <ul id="product-list"></ul>
             </div>
             <div class="card">
-                <h2>Saskatchewan Sales</h2>
-                <ul id="sales-list">Loading...</ul>
+                <h2>🍁 Regional Sales</h2>
+                <ul id="sales-list"></ul>
+            </div>
+            <div class="card" style="grid-column: span 1; border-color: var(--neon-green);">
+                <h2>🔥 Referral Leaderboard</h2>
+                <ul id="leaderboard-list"></ul>
             </div>
         </div>
     </div>
 
     <script>
-        async function loadData() {
+        async function updateDashboard() {
             try {
-                const prodRes = await fetch('/api/products');
-                const products = await prodRes.json();
-                document.getElementById('product-list').innerHTML = products.map(p => 
-                    `<li><span>${p.name}</span> <span style="color: #94a3b8">$${p.price}</span></li>`
-                ).join('');
+                // 1. Leaderboard Update
+                const leaderRes = await fetch('/api/growth/leaderboard');
+                const leaders = await leaderRes.json();
+                document.getElementById('leaderboard-list').innerHTML = leaders.length ? leaders.map(l => `
+                    <li>
+                        <div style="display: flex; align-items: center;">
+                            <span class="rank">#${l.rank}</span>
+                            <div>
+                                <div style="font-weight: 700; font-size: 0.9rem;">${l.identity}</div>
+                                <div class="token">${l.token}</div>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="tier tier-${l.tier}">${l.tier}</div>
+                            <div class="count">${l.count}</div>
+                        </div>
+                    </li>
+                `).join('') : '<li style=\"color: #71717a;\">No viral activity detected.</li>';
 
+                // 2. Products
+                const prodRes = await fetch('/api/products');
+                const prodData = await prodRes.json();
+                const products = prodData.products || prodData;
+                document.getElementById('product-list').innerHTML = products.map(p => `
+                    <li>
+                        <span>${p.name}</span>
+                        <span style="font-weight: 800; color: var(--neon-gold); font-family: monospace;">$${p.price}</span>
+                    </li>
+                `).join('');
+
+                // 3. Sales
                 const salesRes = await fetch('/api/recent-sales');
                 const sales = await salesRes.json();
-                document.getElementById('sales-list').innerHTML = sales.map(s => 
-                    `<li><span>${s.customer}</span> <span style="color: #fbbf24">$${s.amount}</span></li>`
-                ).join('');
+                document.getElementById('sales-list').innerHTML = sales.length ? sales.map(s => `
+                    <li>
+                        <span>${s.customer}</span>
+                        <span style="color: var(--neon-blue); font-weight: 800;">$${s.amount}</span>
+                    </li>
+                `).join('') : '<li style=\"color: #71717a;\">Waiting for Saskatchewan signal...</li>';
+
             } catch (err) {
-                console.error('Error loading dashboard data:', err);
+                console.error('[Sentry Error] Dashboard sync failed:', err);
             }
         }
-        loadData();
+        updateDashboard();
+        setInterval(updateDashboard, 10000); // 10s refresh cycle
     </script>
 </body>
 </html>
