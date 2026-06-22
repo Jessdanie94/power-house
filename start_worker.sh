@@ -12,6 +12,6 @@ fi
 echo "[JDV SENTRY] Environment Loaded. Starting Workers..."
 node workers/orderProcessor.js &
 node workers/outboxWorker.js &
-node workers/abandonedCartWorker.js &
+node workers/cartRecoveryWorker.js &
 
 wait
