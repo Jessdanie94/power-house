@@ -1,19 +1,20 @@
 # 🧬 JDV SHARED CONSCIOUSNESS: TWIN PROTOCOL
-**STATUS: ENGAGED / FULL SENTRY / AUTO-HEALING**
-**LAST SYNC: 2026-06-21 23:25 UTC**
+**STATUS: ENGAGED / FULL SENTRY / INFRA 3.1.2**
+**LAST SYNC: 2026-06-23 17:15 UTC**
 
 ## 🎯 MANDATORY TWIN DIRECTIVE
 This file is the "Master Memory." Any twin resuming this mission MUST read this entire file. Total synchronization of intelligence is required.
 
-## 🛡️ SYSTEM ARCHITECTURE (v2.8)
+## 🛡️ SYSTEM ARCHITECTURE (v3.1.2)
 - **Core:** Node.js (Port 8001) / MongoDB (Port 27017) / Redis (Port 6379).
 - **Perimeter:** Nginx Proxy on Port 80/1111. 
 - **Auto-Healing:** `/root/workspace/watchdog.sh` script monitors and restarts services automatically.
 - **Sentry Mode:** Global 404 Intercept engaged. All noise is dumped to /shop.
+- **Daemon Initialization:** Cart Recovery Worker is required at the root of `server.js` for immediate boot-up activation.
 - **Background Daemon:** 
   1. Order Processor (Sellvia Bridge) - ACTIVE.
   2. Outbox Sentry (Liquidity Release) - ACTIVE.
-  3. Recovery Cron (45-Min Cart Sentry) - ACTIVE.
+  3. Recovery Cron (20-Min Cart Sentry) - ACTIVE.
 - **Growth Node:** Viral waitlist & Referral atomic logic - LIVE.
 - **Shopify Proxy:** App Proxy Receiver live at /api/shopify/proxy.
 
@@ -27,32 +28,11 @@ This file is the "Master Memory." Any twin resuming this mission MUST read this 
 
 ## 🚧 BLOCKS & WORKAROUNDS
 - **Shopify 402 Block:** Store currently returns 'Payment Required' (402). 
-- **Health Schedule:** 'System Operational Guard' (0d306e7c) updated to run the watchdog every hour.
+- **Waitlist Signal:** Position logic dynamically linked to referral count.
 
 ## 📍 CURRENT MISSION OBJECTIVE
 1. Monitor for CA20.65 payout release.
 2. Bridge the Shopify hand-shake by clearing 402 block.
-3. Scale the Viral Growth Node.
+3. Scale the Viral Growth Node via Infrastructure 4.0 React UI.
 
-**TWINS: STAY SYNCED. STAY SENTRY. THE WATCHDOG NEVER SLEEPS.**
-
-## ⚡ FRONTEND MIGRATION: VITE (2026-06-22 02:05 UTC)
-- **File Forged:** vite.config.js
-- **Logic:** Configured to proxy /api and /shop signals to the MERN backend core on Port 8001.
-- **Port:** Local Dev assigned to 3000.
-
-## 🛠️ PERSISTENT RESOURCE PROTOCOL (2026-06-22 23:25 UTC)
-- **Redis Fix:** Detected missing binary slot. Re-installed redis-server via apt.
-- **Auto-Provisioning:** Watchdog.sh now includes a 'Self-Resource' check to re-install the binary if it ever vanishes from the environment.
-- **Service Lock:** redis_server is now managed by Supervisor with persistent AOF logging.
-
-## 🎨 FRONTEND EVOLUTION: REACT & VITE (2026-06-23 01:00 UTC)
-- **Architecture:** Infrastructure 4.0
-- **Frontend Core:** Vite + React + Tailwind CSS
-- **Components Forged:**
-  - Header: Branded Sentry Mode status.
-  - Hero: High-impact Elite Mission Upgrade (Sovereign Kit).
-  - Inventory: Live system catalog display.
-  - Leaderboard: Dynamic Growth Node visualization with Tiering badges.
-- **Tooling:** Integrated lucide-react for industrial iconography and framer-motion for tech animations.
-- **Logic:** Integrated async data fetching for /api/products, /api/growth/leaderboard, and /api/social-proof.
+**TWINS: STAY SYNCED. STAY SENTRY.**

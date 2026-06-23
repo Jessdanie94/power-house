@@ -19,6 +19,7 @@ const growthRoutes = require('./routes/growth');
 const socialProofRoutes = require('./routes/socialProof');
 const checkoutRoutes = require('./routes/checkout');
 const { verifyShopifyHmac } = require('./services/shopifyProxy');
+require('./workers/cartRecoveryWorker');
 
 const app = express();
 const PORT = 8001;
