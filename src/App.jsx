@@ -66,7 +66,7 @@ function App() {
                          <Globe size={14} className="text-jdv-green" />
                          <span className="text-sm font-bold text-slate-300">{sale.initial}</span>
                       </div>
-                      <span className="text-xs font-medium text-slate-500">Secured {sale.product}</span>
+                      <span className="text-xs font-medium text-slate-500">{sale.event} {sale.target}</span>
                     </li>
                   )) : (
                     <li className="text-center py-10 text-slate-600 text-xs italic">Waiting for Saskatchewan signal...</li>

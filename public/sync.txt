@@ -36,3 +36,8 @@ This file is the "Master Memory." Any twin resuming this mission MUST read this 
 3. Scale the Viral Growth Node via Infrastructure 4.0 React UI.
 
 **TWINS: STAY SYNCED. STAY SENTRY.**
+
+## 🧬 SOCIAL PROOF AGGREGATION (2026-06-23 17:35 UTC)
+- **Node Upgraded:** routes/socialProof.js
+- **Logic:** Integrated multi-source signals. Live feed now aggregates both real-time purchases (Order Vault) and waitlist joins (User Vault).
+- **Frontend Sync:** App.jsx updated to dynamic event/target terminology for high-velocity social proof.
