@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-jdv-dark text-slate-200 antialiased selection:bg-jdv-blue/30;
+  }
+}
+
+.neon-glow-blue {
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+}
+
+.neon-glow-green {
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+}
