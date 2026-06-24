@@ -1,4 +1,5 @@
 const { logSecurityEventNode } = require('./services/securityLogger');
+const { logToIsolatedVault } = require('./693300f4dac1ac6b9babb468/auditLogger');
 require('dotenv').config();
 const express = require('express');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
@@ -10,28 +11,33 @@ const connectDB = require('./config/db');
 const Order = require('./models/Order');
 const Cart = require('./models/Cart');
 const User = require('./models/User');
+const CheckoutSession = require('./models/CheckoutSession');
 const { calculateRegionalTaxNode } = require('./nodes/regionalTaxManager');
 const { sendMissionConfirmed } = require('./services/emailService');
 const { connectCacheNode, cacheWrapNode } = require('./services/cacheNode');
 const { CircuitBreaker } = require('./services/circuitBreaker');
 const { checkInternalHealth } = require('./services/healthMonitor');
+
+// 🧬 AUTONOMY WORKERS
+const { startSystemSentinel } = require('./workers/systemSentinel');
 const growthRoutes = require('./routes/growth');
 const socialProofRoutes = require('./routes/socialProof');
-const disputeShieldRoutes = require('./routes/disputeShield');
-const webhookRoutes = require('./routes/webhooks');
 const checkoutRoutes = require('./routes/checkout');
+const disputeShieldRouter = require('./routes/disputeShield');
 const { verifyShopifyHmac } = require('./services/shopifyProxy');
+
+// Initialize integrated daemons
 require('./workers/cartRecoveryWorker');
 
 const app = express();
 const PORT = 8001;
 
-connectDB();
+connectDB().then(() => {
+    console.log('📦 MongoDB connection stable.');
+    // 3. BOOT THE SELF-HEALING WATCHMAN DAEMON
+    startSystemSentinel(30000);
+});
 connectCacheNode();
-
-const orderRoutingQueue = new Queue('order-routing', process.env.REDIS_URL || 'redis://127.0.0.1:6379');
-const recoveryQueue = new Queue('abandoned-cart-recovery', process.env.REDIS_URL || 'redis://127.0.0.1:6379');
-const webhookBreaker = new CircuitBreaker('STRIPE_WEBHOOK_GUARD', 5, 60000);
 
 app.use(cors());
 app.use((req, res, next) => {
@@ -47,10 +53,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/growth', growthRoutes);
 app.use('/api/social-proof', socialProofRoutes);
 app.use('/api/checkout', checkoutRoutes);
-app.use('/api/dispute-shield', disputeShieldRoutes);
-app.use('/api/webhooks', webhookRoutes);
+app.use('/api/dispute-shield', disputeShieldRouter);
 
-// ACCELERATED PRODUCT CATALOG (24H CACHE IN GROWTH MODE)
 app.get('/api/products', async (req, res) => {
     const fetchProducts = async () => {
         return [
@@ -60,36 +64,9 @@ app.get('/api/products', async (req, res) => {
             { id: 14, name: 'Eco-Smart LED Hub', price: 39.95, category: 'Smart Home', emoji: '💡' }
         ];
     };
-    const ttl = parseInt(process.env.CACHE_EXPIRY_SECONDS) || 3600;
+    const ttl = parseInt(process.env.CACHE_EXPIRY_SECONDS) || 86400;
     const result = await cacheWrapNode('product_catalog', ttl, fetchProducts);
     res.json(result.data);
-});
-
-app.post('/api/cart/update', async (req, res) => {
-    const { email, items } = req.body;
-    try {
-        let cart = await Cart.findOne({ email, status: 'IN_FLIGHT' });
-        if (!cart) {
-            cart = await Cart.create({ email, items });
-        } else {
-            cart.items = items;
-            cart.lastUpdated = Date.now();
-            await cart.save();
-        }
-        
-        // GROWTH VELOCITY: Trigger recovery after 20 minutes (1200000 ms)
-        const delay = parseInt(process.env.CART_RECOVERY_WINDOW_MS) || 2700000;
-        await recoveryQueue.add({ cartId: cart._id, email }, { delay, removeOnComplete: true });
-        
-        res.json({ status: 'tracked', cartId: cart._id });
-    } catch (e) { res.status(500).json({ error: e.message }); }
-});
-
-app.get('/api/shopify/proxy', async (req, res) => {
-    const isAuthentic = verifyShopifyHmac(req.query);
-    res.set('Content-Type', 'application/liquid');
-    if (!isAuthentic && process.env.NODE_ENV === 'production') return res.status(401).send('Unauthorized Handshake.');
-    res.send('<h2>JDV Sentry Core Active</h2>');
 });
 
 app.get('/api/health', async (req, res) => { res.json(await checkInternalHealth()); });
@@ -97,6 +74,6 @@ app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'public', 
 app.get('/shop', (req, res) => res.sendFile(path.join(__dirname, 'public', 'shop.html')));
 
 app.listen(PORT, () => {
-    console.log(`JDV Infrastructure 3.1 [GROWTH_VELOCITY] ONLINE on ${PORT}`);
-    logSecurityEventNode('SYSTEM_ARCHITECT', 'Infrastructure 3.1: Growth Velocity Parameters Engaged');
+    console.log(`🚀 Fully Autonomous JDV System Live on Port ${PORT}`);
+    logSecurityEventNode('SYSTEM_ARCHITECT', 'Infrastructure 4.1.2: Sentinel & Dispute Shield Active');
 });
