@@ -17,6 +17,7 @@ const { CircuitBreaker } = require('./services/circuitBreaker');
 const { checkInternalHealth } = require('./services/healthMonitor');
 const growthRoutes = require('./routes/growth');
 const socialProofRoutes = require('./routes/socialProof');
+const disputeShieldRoutes = require('./routes/disputeShield');
 const checkoutRoutes = require('./routes/checkout');
 const { verifyShopifyHmac } = require('./services/shopifyProxy');
 require('./workers/cartRecoveryWorker');
@@ -45,6 +46,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/growth', growthRoutes);
 app.use('/api/social-proof', socialProofRoutes);
 app.use('/api/checkout', checkoutRoutes);
+app.use('/api/dispute-shield', disputeShieldRoutes);
 
 // ACCELERATED PRODUCT CATALOG (24H CACHE IN GROWTH MODE)
 app.get('/api/products', async (req, res) => {
