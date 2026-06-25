@@ -25,6 +25,7 @@ const growthRoutes = require('./routes/growth');
 const socialProofRoutes = require('./routes/socialProof');
 const checkoutRoutes = require('./routes/checkout');
 const disputeShieldRouter = require('./routes/disputeShield');
+const webhookRoutes = require('./routes/webhooks');
 const { verifyShopifyHmac } = require('./services/shopifyProxy');
 
 // Initialize integrated daemons
@@ -35,7 +36,6 @@ const PORT = 8001;
 
 connectDB().then(() => {
     console.log('📦 MongoDB connection stable.');
-    // 3. BOOT THE SELF-HEALING WATCHMAN DAEMON
     startSystemSentinel(30000);
     startFulfillmentGuard(60000);
 });
@@ -47,7 +47,9 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/api/webhook/stripe', express.raw({ type: 'application/json' }));
+// Consolidate all raw body logic into the webhook router
+app.use('/api/webhooks', webhookRoutes);
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -76,6 +78,6 @@ app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'public', 
 app.get('/shop', (req, res) => res.sendFile(path.join(__dirname, 'public', 'shop.html')));
 
 app.listen(PORT, () => {
-    console.log(`🚀 Fully Autonomous JDV System Live on Port ${PORT}`);
-    logSecurityEventNode('SYSTEM_ARCHITECT', 'Infrastructure 4.1.2: Sentinel & Dispute Shield Active');
+    console.log(`🚀 JDV Infrastructure 4.3.1 ONLINE on ${PORT}`);
+    logSecurityEventNode('SYSTEM_ARCHITECT', 'Infrastructure 4.3.1: Consolidated Webhook Node & Shell Persistence Active');
 });
