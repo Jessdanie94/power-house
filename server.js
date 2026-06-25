@@ -18,12 +18,12 @@ const { connectCacheNode, cacheWrapNode } = require('./services/cacheNode');
 const { CircuitBreaker } = require('./services/circuitBreaker');
 const { checkInternalHealth } = require('./services/healthMonitor');
 const { getMissionTelemetry } = require('./nodes/analyticsNode');
+const { getMissionPredictions } = require('./nodes/aiOrchestrator');
 
 // 🧬 AUTONOMY WORKERS
 const { startSystemSentinel } = require('./workers/systemSentinel');
 const { startFulfillmentGuard } = require('./workers/fulfillmentGuard');
 
-const paymentRouter = require('./routes/paymentRouter');
 // 🛰️ MISSION ROUTES
 const growthRoutes = require('./routes/growth');
 const socialProofRoutes = require('./routes/socialProof');
@@ -34,6 +34,7 @@ const paypalRoutes = require('./routes/paypal');
 
 // Initialize integrated daemons
 require('./workers/cartRecoveryWorker');
+require('./workers/liquidityWatcher');
 
 const app = express();
 const PORT = 8001;
@@ -53,10 +54,7 @@ app.use((req, res, next) => {
 
 app.use('/api/webhooks', webhookRoutes);
 app.use('/api/paypal', paypalRoutes);
-
 app.use(express.json());
-
-// Serve React Frontend (dist folder)
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -64,11 +62,13 @@ app.use('/api/growth', growthRoutes);
 app.use('/api/social-proof', socialProofRoutes);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/dispute-shield', disputeShieldRouter);
-app.use('/api/payments', paymentRouter);
 
 app.get('/api/telemetry', async (req, res) => {
-    const data = await getMissionTelemetry();
-    res.json(data);
+    const [telemetry, predictions] = await Promise.all([
+        getMissionTelemetry(),
+        getMissionPredictions()
+    ]);
+    res.json({ ...telemetry, boost: predictions });
 });
 
 app.get('/api/products', async (req, res) => {
@@ -80,14 +80,12 @@ app.get('/api/products', async (req, res) => {
             { id: 14, name: 'Eco-Smart LED Hub', price: 39.95, category: 'Smart Home', emoji: '💡' }
         ];
     };
-    const ttl = parseInt(process.env.CACHE_EXPIRY_SECONDS) || 86400;
-    const result = await cacheWrapNode('product_catalog', ttl, fetchProducts);
+    const result = await cacheWrapNode('product_catalog', 86400, fetchProducts);
     res.json(result.data);
 });
 
 app.get('/api/health', async (req, res) => { res.json(await checkInternalHealth()); });
 
-// SPA Fallback: Direct all unknown requests to index.html
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'), (err) => {
         if (err) res.sendFile(path.join(__dirname, 'public', 'shop.html'));
@@ -95,6 +93,6 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 JDV Unified Conglomerate Core (v4.4) LIVE on ${PORT}`);
-    logSecurityEventNode('SYSTEM_ARCHITECT', 'Infrastructure 4.4: Analytics & PayPal Redundancy Nodes Deployed');
+    console.log(`🚀 JDV Hyper-Scale Core (v5.0) LIVE on ${PORT}`);
+    logSecurityEventNode('SYSTEM_ARCHITECT', 'Infrastructure 5.0: AI Orchestrator & Liquidity Watcher Deployed');
 });
