@@ -20,7 +20,7 @@ const { checkInternalHealth } = require('./services/healthMonitor');
 
 // 🧬 AUTONOMY WORKERS
 const { startSystemSentinel } = require('./workers/systemSentinel');
-require('./workers/fulfillmentGuard');
+const { startFulfillmentGuard } = require('./workers/fulfillmentGuard');
 const growthRoutes = require('./routes/growth');
 const socialProofRoutes = require('./routes/socialProof');
 const checkoutRoutes = require('./routes/checkout');
@@ -37,6 +37,7 @@ connectDB().then(() => {
     console.log('📦 MongoDB connection stable.');
     // 3. BOOT THE SELF-HEALING WATCHMAN DAEMON
     startSystemSentinel(30000);
+    startFulfillmentGuard(60000);
 });
 connectCacheNode();
 
