@@ -48,3 +48,6 @@ STATUS: READY TO PUSH
 [PAYMENT_ROUTING_LIVE] 2026-06-25 16:45 UTC
 STATUS: INFRASTRUCTURE 4.5 DEPLOYED
 RESULT: Dynamic gateway selection active. System protects liquidity via Stripe/PayPal/AuthorizeNet decision tree.
+[PAYLOAD_HARDENING_ACTIVE] 2026-06-25 16:50 UTC
+STATUS: INFRASTRUCTURE 4.5.1 DEPLOYED
+RESULT: Fulfillment payloads are now automatically sanitized. Structural SKU requirements hard-locked to prevent database corruption.

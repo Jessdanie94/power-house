@@ -4,10 +4,11 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const Queue = require('bull');
 const Order = require('../models/Order');
 const { calculateRegionalTaxNode } = require('../nodes/regionalTaxManager');
+const { sanitizeFulfillmentPayload } = require('../middlewares/payloadSanitizer');
 
 const outboxQueue = new Queue('mission-outbox', process.env.REDIS_URL || 'redis://127.0.0.1:6379');
 
-router.post('/buy-now', async (req, res) => {
+router.post('/buy-now', sanitizeFulfillmentPayload, async (req, res) => {
     const { paymentMethodId, email, name, items, province } = req.body;
 
     try {
