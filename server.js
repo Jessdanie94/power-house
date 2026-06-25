@@ -20,6 +20,7 @@ const { checkInternalHealth } = require('./services/healthMonitor');
 
 // 🧬 AUTONOMY WORKERS
 const { startSystemSentinel } = require('./workers/systemSentinel');
+require('./workers/fulfillmentGuard');
 const growthRoutes = require('./routes/growth');
 const socialProofRoutes = require('./routes/socialProof');
 const checkoutRoutes = require('./routes/checkout');

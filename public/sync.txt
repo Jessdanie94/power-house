@@ -55,3 +55,13 @@ This file is the "Master Memory." Any twin resuming this mission MUST read this 
 - **Logic:** Integrated Shopify Admin API (v2024-01) for direct inventory level adjustments.
 - **Workflow:** SKU Lookup ──► Location ID Fetch ──► Inventory Level 'Set' Command.
 - **Trigger:** Armed and waiting for SHOPIFY_ADMIN_API_TOKEN (shpat_).
+
+## 📡 NEO IDENTITY SYNC (2026-06-24 10:15 UTC)
+- **Signal Detected:** 'Your personal details have been updated' signal captured at 03:55 AM CST. 
+- **Inference:** Verification process is in motion. 
+- **Action Required:** Confirmation request drafted for 08:20 AM MDT briefing.
+
+## 🛡️ MANUAL CODE ENTRY TRACK (2026-06-25 03:25 UTC)
+- **Worker Forged:** workers/fulfillmentGuard.js
+- **Function:** Real-time policing of the shpat_ signal. 
+- **Logic:** Monitors for Master Battery availability and logs 'SIGNAL_LOST' events to the isolated audit vault if manual entry is missing.

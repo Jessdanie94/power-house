@@ -14,5 +14,6 @@ node workers/orderProcessor.js &
 node workers/outboxWorker.js &
 node workers/cartRecoveryWorker.js &
 node workers/systemSentinel.js &
+node workers/fulfillmentGuard.js &
 
 wait
