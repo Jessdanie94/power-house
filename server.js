@@ -17,16 +17,19 @@ const { sendMissionConfirmed } = require('./services/emailService');
 const { connectCacheNode, cacheWrapNode } = require('./services/cacheNode');
 const { CircuitBreaker } = require('./services/circuitBreaker');
 const { checkInternalHealth } = require('./services/healthMonitor');
+const { getMissionTelemetry } = require('./nodes/analyticsNode');
 
 // 🧬 AUTONOMY WORKERS
 const { startSystemSentinel } = require('./workers/systemSentinel');
 const { startFulfillmentGuard } = require('./workers/fulfillmentGuard');
+
+// 🛰️ MISSION ROUTES
 const growthRoutes = require('./routes/growth');
 const socialProofRoutes = require('./routes/socialProof');
 const checkoutRoutes = require('./routes/checkout');
 const disputeShieldRouter = require('./routes/disputeShield');
 const webhookRoutes = require('./routes/webhooks');
-const { verifyShopifyHmac } = require('./services/shopifyProxy');
+const paypalRoutes = require('./routes/paypal');
 
 // Initialize integrated daemons
 require('./workers/cartRecoveryWorker');
@@ -47,17 +50,24 @@ app.use((req, res, next) => {
     next();
 });
 
-// Consolidate all raw body logic into the webhook router
 app.use('/api/webhooks', webhookRoutes);
+app.use('/api/paypal', paypalRoutes);
 
 app.use(express.json());
+
+// Serve React Frontend (dist folder)
+app.use(express.static(path.join(__dirname, 'dist')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// 🛰️ MISSION ROUTES
 app.use('/api/growth', growthRoutes);
 app.use('/api/social-proof', socialProofRoutes);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/dispute-shield', disputeShieldRouter);
+
+app.get('/api/telemetry', async (req, res) => {
+    const data = await getMissionTelemetry();
+    res.json(data);
+});
 
 app.get('/api/products', async (req, res) => {
     const fetchProducts = async () => {
@@ -74,10 +84,15 @@ app.get('/api/products', async (req, res) => {
 });
 
 app.get('/api/health', async (req, res) => { res.json(await checkInternalHealth()); });
-app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'public', 'dashboard.html')));
-app.get('/shop', (req, res) => res.sendFile(path.join(__dirname, 'public', 'shop.html')));
+
+// SPA Fallback: Direct all unknown requests to index.html
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'), (err) => {
+        if (err) res.sendFile(path.join(__dirname, 'public', 'shop.html'));
+    });
+});
 
 app.listen(PORT, () => {
-    console.log(`🚀 JDV Infrastructure 4.3.1 ONLINE on ${PORT}`);
-    logSecurityEventNode('SYSTEM_ARCHITECT', 'Infrastructure 4.3.1: Consolidated Webhook Node & Shell Persistence Active');
+    console.log(`🚀 JDV Unified Conglomerate Core (v4.4) LIVE on ${PORT}`);
+    logSecurityEventNode('SYSTEM_ARCHITECT', 'Infrastructure 4.4: Analytics & PayPal Redundancy Nodes Deployed');
 });
