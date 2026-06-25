@@ -23,6 +23,7 @@ const { getMissionTelemetry } = require('./nodes/analyticsNode');
 const { startSystemSentinel } = require('./workers/systemSentinel');
 const { startFulfillmentGuard } = require('./workers/fulfillmentGuard');
 
+const paymentRouter = require('./routes/paymentRouter');
 // 🛰️ MISSION ROUTES
 const growthRoutes = require('./routes/growth');
 const socialProofRoutes = require('./routes/socialProof');
@@ -63,6 +64,7 @@ app.use('/api/growth', growthRoutes);
 app.use('/api/social-proof', socialProofRoutes);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/dispute-shield', disputeShieldRouter);
+app.use('/api/payments', paymentRouter);
 
 app.get('/api/telemetry', async (req, res) => {
     const data = await getMissionTelemetry();
