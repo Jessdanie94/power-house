@@ -19,6 +19,7 @@ const { CircuitBreaker } = require('./services/circuitBreaker');
 const { checkInternalHealth } = require('./services/healthMonitor');
 const { getMissionTelemetry } = require('./nodes/analyticsNode');
 const { getMissionPredictions } = require('./nodes/aiOrchestrator');
+const { fetchProductsGraphQL } = require('./nodes/shopifyGraphQL');
 
 // 🧬 AUTONOMY WORKERS
 const { startSystemSentinel } = require('./workers/systemSentinel');
@@ -71,8 +72,16 @@ app.get('/api/telemetry', async (req, res) => {
     res.json({ ...telemetry, boost: predictions });
 });
 
+// UPGRADED ELITE PRODUCT ENDPOINT (GraphQL Fallback)
 app.get('/api/products', async (req, res) => {
     const fetchProducts = async () => {
+        // Attempt GraphQL Fetch if Token is present
+        if (process.env.SHOPIFY_ADMIN_API_TOKEN) {
+            const gqlProducts = await fetchProductsGraphQL();
+            if (!gqlProducts.error) return gqlProducts;
+        }
+        
+        // Static Fallback for Local Staging
         return [
             { id: 'bundle-001', name: 'Sovereign Tactical Deployment Kit', price: 749.00, category: 'Elite Bundle', emoji: '⚔️' },
             { id: 13, name: 'Bäumr-AG Solar Cement Mixer', price: 549, category: 'Generators', emoji: '🏗️' },
@@ -93,6 +102,6 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 JDV Hyper-Scale Core (v5.0) LIVE on ${PORT}`);
-    logSecurityEventNode('SYSTEM_ARCHITECT', 'Infrastructure 5.0: AI Orchestrator & Liquidity Watcher Deployed');
+    console.log(`🚀 JDV Hyper-Scale Core (v5.1) LIVE on ${PORT}`);
+    logSecurityEventNode('SYSTEM_ARCHITECT', 'Infrastructure 5.1: Shopify GraphQL Bridge Online');
 });
