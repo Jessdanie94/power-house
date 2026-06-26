@@ -1,6 +1,7 @@
 const Queue = require('bull');
 const { logSecurityEventNode } = require('../services/securityLogger');
 
+const { submitFulfillmentRequestNode } = require('../nodes/fulfillmentGraphQL');
 const outboxQueue = new Queue('mission-outbox', process.env.REDIS_URL || 'redis://127.0.0.1:6379');
 
 console.log('[Outbox Worker] Fulfillment Sentry is standing by for the Liquidity Flip.');
