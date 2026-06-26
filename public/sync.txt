@@ -106,3 +106,8 @@ This file is the "Master Memory." Any twin resuming this mission MUST read this 
 - **Mutation:** fulfillmentOrderSubmitFulfillmentRequest
 - **Logic:** Replaces legacy REST fulfillment with modern Shopify App Store compliant GraphQL mutations for product sourcing (Sellvia Bridge).
 - **Status:** ARMED. Awaiting shpat_ payload to execute against real gid:// endpoints.
+
+## 🛡️ INFRASTRUCTURE 5.2.2: TIMING-SAFE WEBHOOKS (2026-06-26 12:40 UTC)
+- **Security Upgrade:** routes/webhooks.js updated with crypto.timingSafeEqual.
+- **Node Forge:** Integrated SHA256 base64 digest verification for Shopify signals.
+- **Protocol:** Immediate 200 response followed by async mission processing.
