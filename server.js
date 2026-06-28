@@ -21,6 +21,9 @@ const { getMissionTelemetry } = require('./nodes/analyticsNode');
 const { getMissionPredictions } = require('./nodes/aiOrchestrator');
 const { fetchProductsGraphQL } = require('./nodes/shopifyGraphQL');
 
+// 1. IMPORT THE AUTOMATED TOKEN EXCHANGER
+const { fetchLiveGatewayTokens } = require('./config/tokenExchanger');
+
 // 🧬 AUTONOMY WORKERS
 const { startSystemSentinel } = require('./workers/systemSentinel');
 const { startFulfillmentGuard } = require('./workers/fulfillmentGuard');
@@ -39,6 +42,12 @@ require('./workers/liquidityWatcher');
 
 const app = express();
 const PORT = 8001;
+
+// 2. IMMEDIATE BOOTSTRAP INVOCATION
+(async () => {
+  // Obtains keys automatically before the app layer handles its first visitor
+  await fetchLiveGatewayTokens(); 
+})();
 
 connectDB().then(() => {
     console.log('📦 MongoDB connection stable.');
@@ -102,6 +111,6 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 JDV Hyper-Scale Core (v5.1) LIVE on ${PORT}`);
-    logSecurityEventNode('SYSTEM_ARCHITECT', 'Infrastructure 5.1: Shopify GraphQL Bridge Online');
+    console.log(`🚀 JDV Hyper-Scale Core (v5.2.2) LIVE on ${PORT}`);
+    logSecurityEventNode('SYSTEM_ARCHITECT', 'Infrastructure 5.2.2: Automated Token Exchanger Armed');
 });
