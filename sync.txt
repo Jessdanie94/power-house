@@ -4,3 +4,5 @@
 [Wed Jun 24 22:08:33 UTC 2026] Run 557: CRITICAL RECOVERY. Redis re-provisioned, MongoDB restarted. Shopify 402. Briefing sent.
 [Thu Jun 25 21:08:54 UTC 2026] Run 580: CRITICAL RECOVERY. Redis re-provisioned, MongoDB restarted (PID 513). Shopify 402. Briefing sent.
 [Fri Jun 26 02:08:33 UTC 2026] Run 585: CRITICAL RECOVERY. Redis binary restored; MongoDB restored (PID 521). Shopify 402.
+[Sat Jun 27 19:09:06 UTC 2026] Run 626: CRITICAL RECOVERY. Redis re-provisioned, MongoDB restarted (PID 636), Power House restarted. Shopify 402. Briefing sent.
+[2026-06-28 04:08 AM UTC] Run 632: CRITICAL. Redis binary missing/re-provisioned. MongoDB recovered. Shopify 402.
