@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, ::before, ::after { box-sizing: border-box; border-color: theme('colors.gray.200'); }
+  html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; height: 100%; }
+  body { @apply bg-surface-light text-gray-900 antialiased; font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11'; min-height: 100%; overflow-x: hidden; }
+  input, textarea, select { @apply focus:outline-none focus:ring-2 focus:ring-brand/50; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { @apply bg-transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-gray-300 rounded-full hover:bg-gray-400; }
+}
