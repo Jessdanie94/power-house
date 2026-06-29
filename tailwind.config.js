@@ -1,20 +1,16 @@
-/** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{html,js,ts,jsx,tsx}",
+    "./public/**/*.html",
   ],
   theme: {
     extend: {
       colors: {
-        'jdv-dark': '#09090b',
-        'jdv-card': '#18181b',
-        'jdv-border': '#27272a',
-        'jdv-blue': '#38bdf8',
-        'jdv-green': '#10b981',
-        'jdv-gold': '#fbbf24',
-        'jdv-red': '#ef4444',
+        brand: { light: '#f0fdf4', DEFAULT: '#16a34a', dark: '#14532d' },
+        surface: { light: '#ffffff', dark: '#121212' }
       },
+      fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
+      boxShadow: { 'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)' }
     },
   },
   plugins: [],
