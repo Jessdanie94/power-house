@@ -1,20 +1,19 @@
 require("dotenv").config();
+const { validateEnv } = require("./validateEnv");
 const { listProductsRest, listProductsGraphQL } = require("./shopifySafeClient");
-const logger = require("./safeLogger");
+const log = require("./secureLogger");
 
 (async () => {
   try {
-    logger.info("Running Shopify safe-client smoke test...");
+    validateEnv();
 
     const rest = await listProductsRest(5);
-    logger.info("REST products:", rest.products ?? rest);
+    log.info("REST products fetched", { count: rest.products?.length ?? 0 });
 
     const gql = await listProductsGraphQL(5);
-    logger.info("GraphQL products:", gql);
-
-    logger.info("Smoke test PASSED.");
+    log.info("GraphQL products fetched", { count: gql.length });
   } catch (err) {
-    logger.error("Smoke test FAILED:", err);
+    log.error("Shopify smoke test failed", err);
     process.exit(1);
   }
 })();
