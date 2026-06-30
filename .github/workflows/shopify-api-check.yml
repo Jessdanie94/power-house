@@ -28,3 +28,6 @@ jobs:
 
       - name: Run Shopify REST smoke test
         run: node testShopifyRest.js
+
+      - name: Run Shopify smoke test (safe client)
+        run: node testShopifySafeClient.js

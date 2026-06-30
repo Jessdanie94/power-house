@@ -1,53 +1,36 @@
 /**
- * Shopify REST API Smoke Test
- * Verifies connectivity to the Shopify Admin REST API by fetching shop info.
+ * Shopify REST API Smoke Test (v2 – uses shopifySafeClient.js)
+ * Verifies connectivity by listing products via the resilient fetch-with-retry client.
+ * Falls back to shop.json if product listing returns empty.
  */
 
-const https = require("https");
+const { listProductsRest, shopifyRest } = require("./shopifySafeClient");
 
-const token = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN;
-const domain = process.env.SHOPIFY_STORE_DOMAIN;
-const apiVersion = process.env.SHOPIFY_API_VERSION || "2024-01";
+async function main() {
+  console.log("Smoke test: listing products via shopifySafeClient (with retry/backoff)...");
 
-if (!token || !domain) {
-  console.error("ERROR: Missing required env vars SHOPIFY_ADMIN_ACCESS_TOKEN or SHOPIFY_STORE_DOMAIN");
-  process.exit(1);
+  try {
+    // Primary check: list up to 3 products
+    const productData = await listProductsRest(3);
+    const products = productData.products || [];
+
+    if (products.length > 0) {
+      console.log(`SUCCESS: Retrieved ${products.length} product(s):`);
+      products.forEach((p) => console.log(`  - [${p.id}] ${p.title} (${p.status})`));
+    } else {
+      // Fallback: verify connectivity via shop info
+      console.log("No products found; verifying connectivity via /shop.json...");
+      const shopData = await shopifyRest("/shop.json");
+      const shop = shopData.shop;
+      console.log(`SUCCESS: Connected to shop "${shop.name}" (${shop.myshopify_domain})`);
+      console.log("  (No products listed yet – store may be empty.)");
+    }
+
+    process.exit(0);
+  } catch (err) {
+    console.error(`FAILED: ${err.message}`);
+    process.exit(1);
+  }
 }
 
-const path = `/admin/api/${apiVersion}/shop.json`;
-
-const options = {
-  hostname: domain,
-  port: 443,
-  path: path,
-  method: "GET",
-  headers: {
-    "X-Shopify-Access-Token": token,
-    "Content-Type": "application/json",
-  },
-};
-
-console.log(`Smoke test: GET https://${domain}${path}`);
-
-const req = https.request(options, (res) => {
-  let data = "";
-  res.on("data", (chunk) => (data += chunk));
-  res.on("end", () => {
-    if (res.statusCode >= 200 && res.statusCode < 300) {
-      const shop = JSON.parse(data).shop;
-      console.log(`SUCCESS: Connected to shop "${shop.name}" (${shop.myshopify_domain})`);
-      process.exit(0);
-    } else {
-      console.error(`FAILED: HTTP ${res.statusCode}`);
-      console.error(data);
-      process.exit(1);
-    }
-  });
-});
-
-req.on("error", (err) => {
-  console.error(`FAILED: ${err.message}`);
-  process.exit(1);
-});
-
-req.end();
+main();
