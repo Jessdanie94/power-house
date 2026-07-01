@@ -85,14 +85,14 @@
                             <div class="charcoal-bg p-8 md:p-12 rounded-[1.4rem] flex flex-col md:flex-row gap-10 items-center">
                                 <div class="flex-1">
                                     <div class="inline-block bg-emerald-500 text-black px-4 py-1 rounded-full text-xs font-black tracking-widest uppercase mb-6">Elite Mission Upgrade</div>
-                                    <h2 class="text-4xl md:text-5xl font-black mb-4">${bundle.name}</h2>
-                                    <p class="text-gray-400 text-lg mb-8 leading-relaxed">${bundle.description}</p>
+                                    <h2 class="text-4xl md:text-5xl font-black mb-4">\${bundle.name}</h2>
+                                    <p class="text-gray-400 text-lg mb-8 leading-relaxed">\${bundle.description}</p>
                                     <div class="flex items-center gap-6">
-                                        <p class="text-emerald-400 font-mono text-4xl font-bold">$${bundle.price.toLocaleString()}</p>
+                                        <p class="text-emerald-400 font-mono text-4xl font-bold">$\${bundle.price.toLocaleString()}</p>
                                         <button class="bg-emerald-600 hover:bg-emerald-500 text-black font-black px-10 py-4 rounded-xl transition-all active:scale-95 uppercase tracking-widest text-sm shadow-[0_10px_30px_rgba(16,185,129,0.3)]">Deploy Kit Now</button>
                                     </div>
                                 </div>
-                                <div class="text-[10rem] opacity-20 hidden md:block select-none">${bundle.emoji}</div>
+                                <div class="text-[10rem] opacity-20 hidden md:block select-none">\${bundle.emoji}</div>
                             </div>
                         </div>
                     `;
@@ -101,11 +101,11 @@
                 grid.innerHTML = regulars.map(p => `
                     <div class="charcoal-bg p-8 rounded-3xl border border-gray-800 hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] transition-all duration-500 group relative overflow-hidden">
                         <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-20 transition-opacity">
-                            <span class="text-8xl">${p.emoji}</span>
+                            <span class="text-8xl">\${p.emoji}</span>
                         </div>
-                        <div class="text-5xl mb-6">${p.emoji}</div>
-                        <h3 class="text-2xl font-bold mb-3">${p.name}</h3>
-                        <p class="text-emerald-400 font-mono text-2xl mb-8">$${p.price.toLocaleString()}</p>
+                        <div class="text-5xl mb-6">\${p.emoji}</div>
+                        <h3 class="text-2xl font-bold mb-3">\${p.name}</h3>
+                        <p class="text-emerald-400 font-mono text-2xl mb-8">$\${p.price.toLocaleString()}</p>
                         <button class="w-full bg-emerald-600 hover:bg-emerald-500 text-black font-black py-4 rounded-xl transition-all active:scale-95 uppercase tracking-widest text-xs">Secure Unit Now</button>
                     </div>
                 `).join('');
@@ -134,7 +134,7 @@
                 
                 setTimeout(() => {
                     initialEl.innerText = sale.initial;
-                    textEl.innerHTML = `<strong class="text-white">${sale.initial}</strong> in <span class="text-emerald-400 font-medium">${sale.city}</span> just secured a <span class="text-white">${sale.product}</span> ${timeStr}!`;
+                    textEl.innerHTML = \`<strong class="text-white">\\${sale.initial}</strong> in <span class="text-emerald-400 font-medium">\\${sale.city}</span> just secured a <span class="text-white">\\${sale.product}</span> \\${timeStr}!\`;
                     popup.classList.add('show');
                 }, 600);
 

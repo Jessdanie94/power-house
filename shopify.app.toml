@@ -1,0 +1,36 @@
+# shopify.app.toml - Shopify CLI Configuration
+# NOTE: This app is deployed as a STANDALONE web app, not a Shopify embedded app.
+# The Shopify Admin API is used via shpat token for order management/fulfillment.
+# Use `shopify app deploy` only if converting to an embedded app in the future.
+# For production deployment, use the deploy.sh script or Dockerfile below.
+
+name = "Cooking Mate"
+client_id = "110f35c49b71c14c08ba82aa1cd6cd38"
+application_url = "https://cookingmate.jessesdigitalventures.com"
+embedded = false
+
+[access_scopes]
+scopes = "read_products,write_products,read_orders,write_orders,read_fulfillments,write_fulfillments,read_inventory,write_inventory"
+
+[auth]
+redirect_urls = [
+  "https://cookingmate.jessesdigitalventures.com/auth/callback",
+  "http://localhost:8001/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-01"
+
+  [webhooks.subscriptions]
+  
+    [[webhooks.subscriptions.compliance]]
+    topics = ["customers/data_request", "customers/redact", "shop/redact"]
+    uri = "/api/webhooks/compliance"
+
+    [[webhooks.subscriptions.events]]
+    topics = ["orders/create", "orders/fulfilled", "fulfillments/create"]
+    uri = "/api/webhooks/shopify/order"
+
+[build]
+automatically_update_urls_on_dev = false
+dev_store_url = "jessesdigitalventures.myshopify.com"

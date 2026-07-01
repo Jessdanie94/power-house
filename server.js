@@ -28,7 +28,7 @@ const { fetchLiveGatewayTokens } = require('./config/tokenExchanger');
 const { startSystemSentinel } = require('./workers/systemSentinel');
 const { startFulfillmentGuard } = require('./workers/fulfillmentGuard');
 
-// 🛰️ MISSION ROUTES
+// 📡 MISSION ROUTES
 const growthRoutes = require('./routes/growth');
 const socialProofRoutes = require('./routes/socialProof');
 const checkoutRoutes = require('./routes/checkout');

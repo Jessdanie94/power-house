@@ -1,5 +1,5 @@
 /**
- * Shopify REST API Smoke Test (v2 – uses shopifySafeClient.js)
+ * Shopify REST API Smoke Test (v2 – uses shopifyClient.js)
  * Verifies connectivity by listing products via the resilient fetch-with-retry client.
  * Falls back to shop.json if product listing returns empty.
  */
@@ -7,7 +7,7 @@
 const { listProductsRest, shopifyRest } = require("./shopifySafeClient");
 
 async function main() {
-  console.log("Smoke test: listing products via shopifySafeClient (with retry/backoff)...");
+  console.log("Smoke test: listing products via shopifyClient (with retry/backoff)...");
 
   try {
     // Primary check: list up to 3 products
