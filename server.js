@@ -35,6 +35,7 @@ const checkoutRoutes = require('./routes/checkout');
 const disputeShieldRouter = require('./routes/disputeShield');
 const webhookRoutes = require('./routes/webhooks');
 const paypalRoutes = require('./routes/paypal');
+const oauthRoutes = require('./routes/oauth');
 
 // Initialize integrated daemons
 require('./workers/cartRecoveryWorker');
@@ -64,7 +65,9 @@ app.use((req, res, next) => {
 
 app.use('/api/webhooks', webhookRoutes);
 app.use('/api/paypal', paypalRoutes);
+app.use('/api/oauth', oauthRoutes);
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use(express.static(path.join(__dirname, 'public')));
 
