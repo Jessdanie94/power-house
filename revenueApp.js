@@ -24,7 +24,7 @@ async function runRevenueCheck() {
       action: "Log in to Sellvia and push to " + payout.destination
     });
   } else {
-    log.info("🚱 Status: Accumulating capital. No payout ready today.");
+    log.info("🛡️ Status: Accumulating capital. No payout ready today.");
   }
 }
 

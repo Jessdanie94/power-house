@@ -41,9 +41,9 @@ export async function determinePayoutDestination(availableBalance) {
   log.info("Analyzing payout eligibility...", { balance: availableBalance });
 
   if (availableBalance < PAYOUT_THRESHOLD) {
-    log.warn("Payout threshold not reached.", {
-      current: availableBalance,
-      needed: PAYOUT_THRESHOLD
+    log.warn("Payout threshold not reached.", { 
+      current: availableBalance, 
+      needed: PAYOUT_THRESHOLD 
     });
     return null;
   }
