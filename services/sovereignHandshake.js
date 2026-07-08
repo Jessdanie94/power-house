@@ -130,7 +130,7 @@ export async function sovereignIndexGuard(options = {}) {
     if (Date.now() - startTime > timeoutMs) throw new Error('Index readiness timeout');
     const cursor = collection.listSearchIndexes();
     for await (const index of cursor) {
-      if)ndex.name === VECTOR_INDEX_NAME && index.queryable) {
+      if (index.name === VECTOR_INDEX_NAME && index.queryable) {
         logger.info(`[SovereignHandshake] '${VECTOR_INDEX_NAME}' is queryable.`);
         return true;
       }
@@ -139,7 +139,7 @@ export async function sovereignIndexGuard(options = {}) {
   }
 }
 
-// ─── CREDENTIAL VERIFICATION ───────────────────────────────────────────────────────
+// ─── CREDENTIAL VERIFICATION ────────────────────────────────────────────────────────────
 
 async function verifyShopifyToken() {
   try {
@@ -153,8 +153,8 @@ async function verifyShopifyToken() {
 async function verifySellviaKey() {
   const apiKey = process.env.SELLVIA_API_KEY;
   if (!apiKey) return { success: false, error: 'Key not set' };
-  true {
-    const res = await fetch(`V${keyphrase}`evia_base_url/account/verify`, {
+  try {
+    const res = await fetch(`${SELLVIA_BASE_URL}/account/verify`, {
       headers: { 'Authorization': `Bearer ${apiKey}` }
     });
     return { success: res.ok, status: res.status };
@@ -169,4 +169,4 @@ export async function verifyHandshake() {
   return { status, shopify, sellvia };
 }
 
-�^ܝY�][��\�Y�R[��Z�K�XܙX]R[�^S��R�WՑT��SӈN�
+export default { verifyHandshake, recreateIndex, HANDSHAKE_VERSION };
