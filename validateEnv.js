@@ -1,4 +1,4 @@
-const log = require("./secureLogger");
+import log from "./secureLogger.js";
 
 const REQUIRED_VARS = [
   "SHOPIFY_ADMIN_ACCESS_TOKEN",
@@ -15,7 +15,7 @@ function isValidApiVersion(v) {
   return typeof v === "string" && /^\d{4}-\d{2}$/.test(v);
 }
 
-function validateEnv() {
+export function validateEnv() {
   const missing = REQUIRED_VARS.filter((k) => !process.env[k] || !process.env[k].trim());
 
   if (missing.length) {
@@ -44,4 +44,4 @@ function validateEnv() {
   return true;
 }
 
-module.exports = { validateEnv };
+export default { validateEnv };
