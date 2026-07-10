@@ -1,0 +1,54 @@
+{
+  "version": "3.0.0",
+  "codename": "JDV Master Orchestrator V3",
+  "deployed": "2026-07-10T01:12:00Z",
+  "authority": {
+    "root": "Jesse Daniels",
+    "autonomous_ceo": "Wingman (Emergent Agent)",
+    "governance": "Root Authority retains final veto on all financial actions"
+  },
+  "credentials_registry": {
+    "sellvia": {
+      "primary_key": "SELLVIA_API_KEY_JUL10_1",
+      "fallback_key": "SELLVIA_API_KEY_JUL10_2",
+      "status": "CONFIGURED",
+      "last_rotated": "2026-07-10"
+    },
+    "shopify": {
+      "store_url_primary": "SHOPIFY_STORE_URL",
+      "store_url_technical": "SHOPIFY_STORE_URL_TECHNICAL",
+      "client_id": "SHOPIFY_CLIENT_ID",
+      "client_secret": "SHOPIFY_CLIENT_SECRET",
+      "access_token": "SHOPIFY_ACCESS_TOKEN",
+      "status": "BLOCKED",
+      "issue": "app_not_installed on cc5311-j4-store.myshopify.com",
+      "last_attempt": "2026-07-10T01:12:16Z"
+    },
+    "mongodb": {
+      "uri_secret": "MONGODB_URI_FINAL",
+      "password_secret": "MONGO_PASSWORD",
+      "status": "CONFIGURED",
+      "note": "Cluster 618954"
+    },
+    "stripe": {
+      "status": "PENDING_RECONNECTION"
+    }
+  },
+  "billing_sentry": {
+    "status": "ACTIVE",
+    "last_run": "2026-07-10T01:12:31Z",
+    "result": "FAILOVER_TRIGGERED",
+    "neo_balance": 30.10,
+    "cibc_balance": 92.00,
+    "threshold": 50.00,
+    "recommendation": "SWAP_TO_CIBC"
+  },
+  "operational_status": {
+    "overall": "60%",
+    "sellvia_api": "GREEN",
+    "shopify_api": "RED",
+    "mongodb": "YELLOW",
+    "stripe": "RED",
+    "billing_sentry": "GREEN"
+  }
+}
