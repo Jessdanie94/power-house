@@ -1,9 +1,10 @@
 ---
 name: Shopify Integration
 about: Securely integrate and configure the Shopify Admin API access token.
-title: 'Securely Integrate Shopify Admin API Token'
-labels: enhancement, shopify
+title: Securely Integrate Shopify Admin API Token
+labels: enhancement
 assignees: ''
+
 ---
 
 ### Description
