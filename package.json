@@ -21,7 +21,7 @@
     "react-dom": "^19.2.7",
     "redis": "^6.0.0",
     "resend": "^6.16.0",
-    "stripe": "^12.18.0",
+    "stripe": "^22.3.1",
     "tailwindcss": "^4.3.1"
   },
   "scripts": {
