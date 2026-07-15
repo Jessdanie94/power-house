@@ -11,7 +11,6 @@ function isValidStoreDomain(v) {
 }
 
 function isValidApiVersion(v) {
-  // Shopify Admin API versions look like YYYY-MM
   return typeof v === "string" && /^\d{4}-\d{2}$/.test(v);
 }
 
@@ -27,7 +26,6 @@ export function validateEnv() {
   const domain = process.env.SHOPIFY_STORE_DOMAIN;
   const version = process.env.SHOPIFY_API_VERSION;
 
-  // Soft format checks (don't log secrets)
   if (!token.startsWith("shpat_")) {
     log.warn("SHOPIFY_ADMIN_ACCESS_TOKEN format looks unusual (expected shpat_ prefix)");
   }
@@ -37,7 +35,7 @@ export function validateEnv() {
   }
 
   if (!isValidApiVersion(version)) {
-    throw new Error("SHOPIFY_API_VERSION must look like 'YYYY-MM' (example: 2026-04)");
+    throw new Error("SHOPIFY_API_VERSION must look like 'YYYY-MM' (example: 2024-04)");
   }
 
   log.info("Environment validation passed");
