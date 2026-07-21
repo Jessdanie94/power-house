@@ -15,7 +15,7 @@
     "framer-motion": "^12.40.0",
     "ioredis": "^5.11.1",
     "lucide-react": "^1.21.0",
-    "mongoose": "^7.8.10",
+    "mongoose": "^9.8.0",
     "postcss": "^8.5.15",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
