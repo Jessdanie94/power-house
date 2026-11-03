@@ -21,11 +21,10 @@ async function inspectSystemHealth() {
     console.log('[Sentinel Action] Attempting to force-heal connection strings...');
     
     try {
-      await mongoose.disconnect();
-      await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/jesses_digital_ventures');
+      await require('../config/db')();
       console.log('[Sentinel Success] Database pool successfully re-established and healthy.');
     } catch (error) {
-      console.error('[Sentinel Critical Failure] Self-healing connection failed:', error.message);
+      console.error('[Sentinel Critical Failure] Self-healing connection failed:', require('../config/db').redact(error.message));
     }
   }
 }
