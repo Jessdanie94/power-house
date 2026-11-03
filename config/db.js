@@ -1,16 +1,7 @@
 const mongoose = require('mongoose');
 
-const LOCAL_URI = 'mongodb://localhost:27017/jesses_digital_ventures';
+const { resolveUri, startUriRetriever } = require('./uriRetriever');
 const MAX_BACKOFF_MS = 30000;
-
-function resolveUri() {
-  const uri = (process.env.MONGODB_URI || process.env.MONGO_URL || '').trim();
-  if (uri) return uri;
-  if (process.env.NODE_ENV === 'production') {
-    throw new Error('MONGODB_URI (or MONGO_URL) is not set; refusing to fall back to localhost in production');
-  }
-  return LOCAL_URI;
-}
 
 // Masks credentials so URIs and driver messages are safe to log.
 function redact(text) {
@@ -71,7 +62,56 @@ function attachListeners() {
   c.on('error', (err) => logError('connection error', err));
 }
 
+// Poll slowly while credentials are bad: hammering a rejected login can lock the Atlas user.
+async function waitForNewUri(badUri) {
+  const every = Math.max(10000, Number(process.env.MONGODB_URI_REFRESH_MS) || 300000);
+  for (;;) {
+    await new Promise((r) => setTimeout(r, every));
+    let next;
+    try { next = resolveUri(); } catch { continue; }
+    if (next !== badUri) {
+      console.log('[DB] New connection string found; retrying');
+      checkEncoding(next);
+      return next;
+    }
+  }
+}
+
 let connecting = null;
+let stopRetriever = null;
+let activeUri = null;
+
+const CONNECT_OPTIONS = {
+  serverSelectionTimeoutMS: 10000,
+  socketTimeoutMS: 45000,
+  heartbeatFrequencyMS: 10000,
+  maxPoolSize: 10,
+  retryWrites: true,
+};
+
+// Proves a rotated URI works on a throwaway connection before touching the live one.
+async function swapUri(newUri) {
+  checkEncoding(newUri);
+  console.log(`[DB] Validating new URI ${describeUri(newUri)}`);
+  const probe = mongoose.createConnection();
+  try {
+    await probe.openUri(newUri, { ...CONNECT_OPTIONS, serverSelectionTimeoutMS: 8000 });
+  } catch (err) {
+    logError('new URI rejected; keeping current connection', err);
+    throw err;
+  } finally {
+    await probe.close().catch(() => {});
+  }
+  await mongoose.disconnect();
+  await mongoose.connect(newUri, CONNECT_OPTIONS);
+  activeUri = newUri;
+  console.log('[DB] Switched to rotated connection string');
+}
+
+function startRetriever() {
+  if (stopRetriever || process.env.MONGODB_URI_REFRESH === 'off') return;
+  stopRetriever = startUriRetriever({ initialUri: activeUri, onChange: swapUri });
+}
 
 const connectDB = async () => {
   if (mongoose.connection.readyState === 1) return;
@@ -93,21 +133,19 @@ const connectDB = async () => {
     for (;;) {
       attempt += 1;
       try {
-        await mongoose.connect(uri, {
-          serverSelectionTimeoutMS: 10000,
-          socketTimeoutMS: 45000,
-          heartbeatFrequencyMS: 10000,
-          maxPoolSize: 10,
-          retryWrites: true,
-        });
+        await mongoose.connect(uri, CONNECT_OPTIONS);
+        activeUri = uri;
+        startRetriever();
         console.log('[Sentry] Database Vault Connected');
         return;
       } catch (err) {
         logError(`connect attempt ${attempt} failed`, err);
         // Retrying bad credentials or a malformed URI never helps and can lock the account.
         if (isAuthError(err) || /Unable to parse|MongoParseError|must be escaped/.test(`${err.name} ${err.message}`)) {
-          console.error('[DB] Non-retryable error; update MONGODB_URI and redeploy.');
-          process.exit(1);
+          console.error('[DB] Non-retryable error; waiting for a new connection string (polling sources).');
+          uri = await waitForNewUri(uri);
+          attempt = 0;
+          continue;
         }
         const delay = Math.min(1000 * 2 ** Math.min(attempt, 5), MAX_BACKOFF_MS);
         console.warn(`[DB] Retrying in ${delay}ms`);
