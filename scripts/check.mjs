@@ -1,0 +1,21 @@
+import { execFileSync } from 'node:child_process';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import { root, scanSelectedSources } from './credential-scan.mjs';
+
+const files = ['app/server.js', 'scripts/credential-scan.mjs', 'scripts/check.mjs', 'vite.config.js', 'postcss.config.js', 'revenueApp.js', 'revenueVault.js', 'automation/revenueDeposit.js', 'nodes/aiOrchestrator.js', 'shopify_auth_attempt.js', 'shopify_recon_v2.js', 'stripe_recon.js'];
+for (const file of files) execFileSync(process.execPath, ['--check', path.join(root, file)], { stdio: 'inherit' });
+const packageJson = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8'));
+assert.equal(packageJson.packageManager, 'npm@10.9.9');
+assert.equal(packageJson.scripts.start, 'node app/server.js');
+assert.equal(packageJson.scripts.preview, packageJson.scripts.start);
+for (const version of Object.values({ ...packageJson.dependencies, ...packageJson.devDependencies })) assert.match(version, /^\d+\.\d+\.\d+$/);
+const runtime = await readFile(path.join(root, 'app/server.js'), 'utf8');
+assert.doesNotMatch(runtime, /(?:dotenv|workers\/|stripe|axios|mongoose|redis).*from\s+['"]/);
+const viteConfig = await readFile(path.join(root, 'vite.config.js'), 'utf8');
+assert.match(viteConfig, /publicDir:\s*false/);
+assert.match(viteConfig, /sourcemap:\s*false/);
+const scan = await scanSelectedSources();
+assert.equal(scan.findings.length, 0, 'Credential guard blocked selected source or staged contents; values omitted.');
+console.info(`Offline checks passed: ${files.length} syntax checks, pinned toolchain, runtime boundaries, and credential guard.`);
