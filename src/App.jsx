@@ -1,89 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import Inventory from './components/Inventory';
-import Leaderboard from './components/Leaderboard';
-import { Activity, Globe } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
-function App() {
-  const [products, setProducts] = useState([]);
-  const [leaders, setLeaders] = useState([]);
-  const [recentSales, setRecentSales] = useState([]);
-
+export default function App() {
+  const [status, setStatus] = useState(null);
+  const [error, setError] = useState('');
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const [prodRes, leaderRes, salesRes] = await Promise.all([
-          fetch('/api/products'),
-          fetch('/api/growth/leaderboard'),
-          fetch('/api/social-proof/live-signals')
-        ]);
-        
-        const p = await prodRes.json();
-        const l = await leaderRes.json();
-        const s = await salesRes.json();
-        
-        setProducts(p.products || p);
-        setLeaders(l);
-        setRecentSales(s);
-      } catch (err) {
-        console.error("Uplink Failure:", err);
-      }
-    };
-    loadData();
-    const interval = setInterval(loadData, 30000);
-    return () => clearInterval(interval);
+    const controller = new AbortController();
+    fetch('/api/status', { signal: controller.signal, cache: 'no-store' })
+      .then(response => {
+        if (!response.ok) throw new Error('Status unavailable');
+        return response.json();
+      })
+      .then(data => {
+        if (data.mode !== 'operator_read_only') throw new Error('Unexpected runtime');
+        setStatus(data);
+      })
+      .catch(failure => {
+        if (failure.name !== 'AbortError') setError('Local runtime status could not be read. Business readiness remains unknown.');
+      });
+    return () => controller.abort();
   }, []);
-
-  const eliteKit = products.find(p => p.id === 'bundle-001');
-  const regularItems = products.filter(p => p.id !== 'bundle-001');
-
   return (
-    <div className="min-h-screen p-4 md:p-10 max-w-[1600px] mx-auto">
-      <Header />
-      
+    <div className="operator-shell">
+      <header>
+        <p className="operator-label">Power House · Operator release</p>
+        <h1>Read-only operations status</h1>
+        <p>This is not a customer storefront. Checkout, payment capture, supplier actions, webhooks and payouts are disabled.</p>
+      </header>
       <main>
-        <Hero product={eliteKit} />
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-1">
-             <Inventory products={regularItems} />
-          </div>
-          
-          <div className="lg:col-span-1">
-             <Leaderboard data={leaders} />
-          </div>
-          
-          <div className="lg:col-span-1">
-             <div className="card bg-jdv-card border border-jdv-border rounded-2xl p-6 h-full">
-                <h2 className="text-xs font-black uppercase tracking-[0.2em] text-jdv-blue flex items-center gap-2 mb-8">
-                  <Activity size={14} /> Regional Telemetry
-                </h2>
-                <ul className="space-y-4">
-                  {recentSales.length > 0 ? recentSales.map((sale, i) => (
-                    <li key={i} className="flex justify-between py-2 border-b border-jdv-border last:border-none">
-                      <div className="flex items-center gap-3">
-                         <Globe size={14} className="text-jdv-green" />
-                         <span className="text-sm font-bold text-slate-300">{sale.initial}</span>
-                      </div>
-                      <span className="text-xs font-medium text-slate-500">{sale.event} {sale.target}</span>
-                    </li>
-                  )) : (
-                    <li className="text-center py-10 text-slate-600 text-xs italic">Waiting for Saskatchewan signal...</li>
-                  )}
-                </ul>
-             </div>
-          </div>
+        <section className="operator-notice" aria-label="Business readiness">
+          <h2>Business readiness: unknown</h2>
+          <p>No merchant, supplier, revenue or AI integration has been verified by this runtime. A healthy process does not mean the business is ready.</p>
+        </section>
+        <div className="operator-grid">
+          <section className="operator-card">
+            <h2>Runtime</h2>
+            <p role="status">{error || (status ? 'Local process is responding. Operator-only mode confirmed.' : 'Reading local process status…')}</p>
+          </section>
+          <section className="operator-card">
+            <h2>Revenue actuals</h2>
+            <dl><dt>Gross revenue</dt><dd>Unavailable</dd><dt>Net revenue</dt><dd>Unavailable</dd><dt>Currency / observation time</dt><dd>Unknown / unavailable</dd></dl>
+            <p>Missing values are null, not zero. No sample sales or balance estimates are represented as actuals.</p>
+          </section>
+          <section className="operator-card">
+            <h2>Telemetry and AI</h2>
+            <p>Order counts, inventory and supplier availability: unavailable.</p>
+            <p>AI predictions: unavailable. No live model is connected.</p>
+          </section>
+          <section className="operator-card">
+            <h2>Approval gate</h2>
+            <p>Business-action requests return HTTP 503 with executed: false. Verification and explicit approval are required before any future integration.</p>
+          </section>
         </div>
       </main>
-      
-      <footer className="mt-20 pt-8 border-t border-jdv-border text-center">
-        <p className="text-[10px] uppercase tracking-[0.5em] text-slate-600 font-bold">
-          Jesse's Digital Ventures — Architecting Tomorrow, Today
-        </p>
-      </footer>
+      <footer>Local validation only. No claim of deployment, sales, fulfillment or financial activity.</footer>
     </div>
   );
 }
-
-export default App;

@@ -1,33 +1,46 @@
 {
   "name": "power-house",
-"type": "module",
+  "type": "module",
   "version": "1.0.0",
   "main": "app/server.js",
   "dependencies": {
-    "@shopify/shopify-api": "^13.1.0",
-    "autoprefixer": "^10.5.0",
-    "axios": "^1.18.1",
-    "body-parser": "^1.20.2",
-    "bull": "^4.16.5",
-    "cors": "^2.8.6",
-    "dotenv": "^16.6.1",
-    "express": "^4.22.2",
-    "framer-motion": "^12.40.0",
-    "ioredis": "^5.11.1",
-    "lucide-react": "^1.21.0",
-    "mongoose": "^7.8.10",
-    "postcss": "^8.5.15",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
-    "redis": "^6.0.0",
-    "resend": "^6.16.0",
-    "stripe": "^12.18.0",
-    "tailwindcss": "^4.3.1"
+    "@shopify/shopify-api": "13.1.0",
+    "autoprefixer": "10.6.2",
+    "axios": "1.21.1",
+    "body-parser": "1.20.9",
+    "bull": "4.16.5",
+    "cors": "2.8.6",
+    "dotenv": "16.6.1",
+    "express": "4.22.3",
+    "framer-motion": "12.43.0",
+    "ioredis": "5.11.1",
+    "lucide-react": "1.75.0",
+    "mongoose": "7.8.14",
+    "postcss": "8.5.33",
+    "react": "19.2.9",
+    "react-dom": "19.2.9",
+    "redis": "6.3.1",
+    "resend": "6.38.1",
+    "stripe": "12.18.0",
+    "tailwindcss": "4.3.5"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "start": "node app/server.js"
+    "dev": "vite --mode operator",
+    "build": "vite build --mode operator && node scripts/credential-scan.mjs --require-build",
+    "preview": "node app/server.js",
+    "start": "node app/server.js",
+    "check": "node scripts/check.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "scan:credentials": "node scripts/credential-scan.mjs",
+    "validate": "npm run check && npm run build && npm test"
+  },
+  "devDependencies": {
+    "vite": "7.3.8",
+    "@vitejs/plugin-react": "5.2.0"
+  },
+  "packageManager": "npm@10.9.9",
+  "engines": {
+    "node": ">=22.12.0 <23",
+    "npm": "10.9.9"
   }
 }

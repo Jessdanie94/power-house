@@ -1,4 +1,6 @@
-const stripe = require('stripe')('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');
+// LEGACY: Not imported by the operator runtime; no automatic execution.
+import Stripe from 'stripe';
+const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY) : null;
 async function run() {
     try {
         const balance = await stripe.balance.retrieve();
@@ -11,7 +13,7 @@ async function run() {
         console.log('--- PAYOUTS ---');
         console.log(JSON.stringify(payouts.data.map(p => ({ amount: p.amount, status: p.status, arrival: new Date(p.arrival_date * 1000) })), null, 2));
     } catch (e) {
-        console.error(e.message);
+        console.error('Provider request failed; details omitted.');
     }
 }
-run();
+// Legacy reconnaissance is intentionally not auto-run.

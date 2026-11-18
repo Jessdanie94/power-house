@@ -1,8 +1,9 @@
-const axios = require('axios');
+// LEGACY: Not imported by the operator runtime; no automatic execution.
+import axios from 'axios';
 
 async function attempt(clientId) {
-    const shop = 'jessesdigitalventures-gmail-com';
-    const secret = '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';
+    const shop = process.env.SHOPIFY_SHOP_NAME;
+    const secret = process.env.SHOPIFY_CLIENT_SECRET;
     console.log(`--- Attempting with ID: ${clientId} ---`);
     try {
         const response = await axios.post(`https://${shop}.myshopify.com/admin/oauth/access_token`, {
@@ -10,10 +11,10 @@ async function attempt(clientId) {
             client_secret: secret,
             grant_type: 'client_credentials'
         });
-        console.log('SUCCESS:', response.data.access_token);
+        console.log('SUCCESS: Credentials received; token omitted.');
     } catch (e) {
-        console.log('FAILED:', e.response?.status, e.response?.data?.error || e.message);
+        console.log('FAILED: Authentication request rejected; details omitted.');
     }
 }
 
-attempt('9b5fcda32c68c5e2c63eb631711ca7ec');
+// Legacy reconnaissance is intentionally not auto-run.

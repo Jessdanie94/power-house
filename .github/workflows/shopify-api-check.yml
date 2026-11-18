@@ -1,42 +1,24 @@
-name: Shopify API Check
-
+# Retained cadence runs local validation only, never Shopify or other production requests.
+name: Scheduled offline operator validation (no provider calls)
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
   schedule:
     - cron: '0 6 * * *'
-
+permissions:
+  contents: read
 jobs:
-  shopify-check:
+  offline-validation:
     runs-on: ubuntu-latest
-    run-shell: bash
     timeout-minutes: 10
-    env:
-      SHOPIFY_ADMIN_ACCESS_TOKEN: ${{ secrets.SHOPIFY_ADMIN_ACCESS_TOKEN }}
-      SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
-      SHOPIFY_API_VERSION: "2024-04"
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: "20"
-
-      - name: Install deps
-        run: npm ci || npm i
-
-      - name: Validate Environment
-        run: node validateEnv.js
-
-      - name: Run Shopify REST smoke test
-        run: node testShopifyRest.js
-
-      - name: Run Shopify SafeClient smoke test
-        run: node testShopifySafeClient.js
-
-      - name: Sovereign Finality Check
-        run: echo "îš}æ JDV Sovereign Finality â€” All systems nominal."
+          node-version: '22.23.4'
+          cache: npm
+      - name: Pin npm
+        run: npm install --global npm@10.9.9
+      - name: Deterministic install
+        run: npm ci
+      - name: Offline syntax, runtime, source and build validation
+        run: npm run validate

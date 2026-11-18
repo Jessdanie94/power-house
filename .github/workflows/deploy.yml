@@ -1,19 +1,22 @@
-bmFtZTogSkRWIFBvd2VyIEhvdXNlIC0gRGV0ZXJtaW5pc3RpYyBEZXBsb3lt
-ZW50CgpvbjoKICBwdXNoOgogICAgYnJhbmNoZXM6IFsgbWFpbiwgbWFzdGVy
-IF0KICB3b3JrZmxvd19kaXNwYXRjaDoKCmVudjoKICBTSE9QSUZZX0FETUlO
-X0FDQ0VTU19UT0tFTjogJHt7IHNlY3JldHMuU0hPUElGWV9BRE1JTl9BQ0NF
-U1NfVE9LRU4gfX0KICBTSE9QSUZZX1NUT1JFX0RPTUFJTjogJHt7IHNlY3Jl
-dHMuU0hPUElGWV9TVE9SRV9ET01BSU4gfX0KICBTSE9QSUZZX0FQSV9WRVJT
-SU9OOiAke3sgc2VjcmV0cy5TSE9QSUZZX0FQSV9WRVJTSU9OIH19Cgpqb2Jz
-OgogIHZhbGlkYXRlLWFuZC1kZXBsb3llOgoicmVzZW5kIjogIl42LjE0LjAi
-CiAgICBydW5zLW9uOiB1YnVudHUtbGF0ZXN0CgogICAgc3RlcHM6CiAgICAt
-IG5hbWU6IENoZWNrb3V0IFNvdXJjZSBDb2RlCiAgICAgIHVzZXM6IGFjdGlv
-bnMvY2hlY2tvdXRAdjQKCiAgICAtIG5hbWU6IFNldHVwIE5vZGUuanMKICAg
-ICAgdXNlczogYWN0aW9ucy9zZXR1cC1ub2RAdjQKICAgICAgd2l0aDoKICAg
-ICAgICBub2RlLXZlcnNpb246ICcyMCcKICAgICAgICBjYWNoZTogJ25wbScK
-CiAgICAtIG5hbWU6IERldGVybWluaXN0aWMgSW5zdGFsbAogICAgICBydW46
-IG5wbSBpbnN0YWxsCgogICAgLSBuYW1lOiBQcm9kdWN0aW9uIEludGVncml0
-eSBBdWRpdAogICAgICBydW46IG5wbSBhdWRpdCAtLWF1ZGl0LWxldmVsPWhp
-Z2ggfHwgdHJ1ZQoKICAgIC0gbmFtZTogU2lnbmFsIE1pc3Npb24gUmVhZGlu
-ZXNzCiAgICAgIHJ1bjogZWNobyAiSkRWIEF1dG9ub21vdXMgRW50ZXJwcmlz
-ZSBMZXZlbCA0IFZlcmlmaWVkLiIK
+# Historical deploy entry is deliberately manual validation only. No deployment job or provider secrets.
+name: Manual operator validation (no deploy)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.23.4'
+          cache: npm
+      - name: Pin npm
+        run: npm install --global npm@10.9.9
+      - name: Deterministic install
+        run: npm ci
+      - name: Offline syntax, runtime, source and build validation
+        run: npm run validate

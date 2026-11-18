@@ -1,4 +1,5 @@
-const axios = require('axios');
+// LEGACY: Not imported by the operator runtime; no automatic execution.
+import axios from 'axios';
 
 async function attemptAuth(shop, clientId, clientSecret) {
     console.log(`[Auth Attempt] Target: ${shop}, ID: ${clientId}`);
@@ -8,21 +9,21 @@ async function attemptAuth(shop, clientId, clientSecret) {
             client_secret: clientSecret,
             grant_type: 'client_credentials'
         });
-        console.log(`[SUCCESS] Token secured: `, response.data.access_token);
+        console.log('[SUCCESS] Credentials received; token omitted.');
         return response.data.access_token;
     } catch (error) {
-        console.error(`[FAILED] Status: ${error.response?.status} - ${JSON.stringify(error.response?.data)}`);
+        console.error('[FAILED] Authentication request rejected; details omitted.');
         return null;
     }
 }
 
 async function run() {
-    const shop = 'jessesdigitalventures';
-    const secret = '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';
+    const shop = process.env.SHOPIFY_SHOP_NAME;
+    const secret = process.env.SHOPIFY_CLIENT_SECRET;
     
     // Attempt with the two client IDs provided
-    await attemptAuth(shop, '110f35c49b71c14c08ba82aa1cd6cd38', secret);
-    await attemptAuth(shop, 'db1a5c93312c20c3a69976a0c7a062db', secret);
+    await attemptAuth(shop, process.env.SHOPIFY_CLIENT_ID, secret);
+    await attemptAuth(shop, process.env.SHOPIFY_CLIENT_ID, secret);
 }
 
-run();
+// Legacy reconnaissance is intentionally not auto-run.
